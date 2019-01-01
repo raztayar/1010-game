@@ -123,6 +123,7 @@ public class GameActivity extends AppCompatActivity {
 
     private void updateBoardView(){
         int color = Color.parseColor("#BEB8B8");
+
         for (int i = 0; i < boardView.getChildCount(); i++) {
             TableRow row = (TableRow) boardView.getChildAt(i);
             for (int j = 0; j < row.getChildCount(); j++) {
