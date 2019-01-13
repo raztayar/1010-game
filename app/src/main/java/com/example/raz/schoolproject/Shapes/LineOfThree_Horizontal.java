@@ -7,10 +7,10 @@ public class LineOfThree_Horizontal extends Shape {
 
     public LineOfThree_Horizontal(){
 
-        shapeMatrix = new ShapeType[3][1];
+        shapeMatrix = new ShapeType[1][3];
 
         shapeMatrix[0][0] = ShapeType.LINE_OF_THREE;
-        shapeMatrix[1][0] = ShapeType.LINE_OF_THREE;
-        shapeMatrix[2][0] = ShapeType.LINE_OF_THREE;
+        shapeMatrix[0][1] = ShapeType.LINE_OF_THREE;
+        shapeMatrix[0][2] = ShapeType.LINE_OF_THREE;
     }
 }

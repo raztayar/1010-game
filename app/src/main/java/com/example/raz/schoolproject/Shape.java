@@ -3,11 +3,15 @@ package com.example.raz.schoolproject;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.util.TypedValue;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import com.example.raz.schoolproject.Activities.GameActivity;
 
 public abstract class Shape implements IShape {
 
@@ -38,12 +42,12 @@ public abstract class Shape implements IShape {
     public boolean isPlaceableSomewhere(ShapeType[][] board) {
         for (int i=0; i < board.length; i++){
             for (int j=0; j < board[i].length; j++){
-                if (!this.isPlaceable(new Point(i,j), board)){
-                    return false;
+                if (this.isPlaceable(new Point(i,j), board)){
+                    return true;
                 }
             }
         }
-        return true;
+        return false;
     }
 
     @Override
@@ -72,9 +76,13 @@ public abstract class Shape implements IShape {
             table.addView(row);
             for(int j = 0; j < shapeMatrix[i].length; j++){
                 TextView textView = new TextView(context);
-                row.addView(textView, Utilities.dpToPixels(context, 32), Utilities.dpToPixels(context, 32));
+                TableRow.LayoutParams params = new TableRow.LayoutParams(Utilities.dpToPixels(context, 32), Utilities.dpToPixels(context, 32));
+                params.setMargins(Utilities.dpToPixels(context, 2), Utilities.dpToPixels(context, 2), Utilities.dpToPixels(context, 2), Utilities.dpToPixels(context, 2));
+                Log.d("lol", params.debug(""));
+                textView.setLayoutParams(params);
+                row.addView(textView);
                 if(shapeMatrix[i][j] != null){
-                    textView.setBackgroundColor(Color.BLACK);
+                    textView.setBackgroundColor(((GameActivity)context).theme.colorHashMap.get(shapeMatrix[i][j]));
                 }
             }
         }

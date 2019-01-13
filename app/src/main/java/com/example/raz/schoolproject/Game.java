@@ -1,8 +1,6 @@
 package com.example.raz.schoolproject;
 
-import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TableLayout;
 
 import com.example.raz.schoolproject.Activities.GameActivity;
 import com.example.raz.schoolproject.Shapes.Corner_Big_BottomRight;
@@ -49,7 +47,7 @@ public class Game {
         }
     }
 
-    private boolean hasShapesInQueue() {
+    public boolean hasShapesInQueue() {
         for (IShape slot : shapeQueue) {
             if(slot != null) return true;
         }
@@ -57,7 +55,7 @@ public class Game {
     }
 
     private void bringShapeToSlot(final int i) {
-        IShape shape = new Corner_Big_BottomRight();
+        IShape shape = Utilities.createRandomShape();
 
         gameActivity.getQueueSlotLayout(i).addView(shape.createShapeAsTableLayout(gameActivity));
         shapeQueue[i] = shape;
@@ -72,11 +70,51 @@ public class Game {
     public void removeShapeFromSlot(int i){
         LinearLayout slotLayout = gameActivity.getQueueSlotLayout(i);
         slotLayout.removeAllViews();
-        gameActivity.setCurrentShapeToPlaceIndex(-1);
+        gameActivity.setCurrentSlotIndex(-1);
         shapeQueue[i] = null;
     }
 
     public ShapeType[][] getBoard() {
         return board;
+    }
+
+    public void removeFullRowsAndColumns(){
+        boolean[] filledRows = new boolean[BOARD_HEIGHT];
+        for (int i = 0; i < BOARD_HEIGHT; i++){
+            filledRows[i] = true;
+        }
+
+        boolean[] filledColumns = new boolean[BOARD_WIDTH];
+        for (int i = 0; i < BOARD_WIDTH; i++){
+            filledColumns[i] = true;
+        }
+
+        for (int i = 0; i < BOARD_HEIGHT; i++){
+            for (int j = 0; j< BOARD_WIDTH; j++){
+                if(board[i][j] == null){
+                    filledRows[i] = false;
+                    filledColumns[j] = false;
+                }
+            }
+        }
+
+        for (int i = 0; i < BOARD_HEIGHT; i++) {
+            for (int j = 0; j < BOARD_WIDTH; j++) {
+                if (filledRows[i] || filledColumns[j]) {
+                    board[i][j] = null;
+                }
+            }
+        }
+    }
+
+    public boolean isGameOver() {
+        for (int i = 0; i < 3; i++) {
+            if (shapeQueue[i] != null){
+                if (shapeQueue[i].isPlaceableSomewhere(board)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

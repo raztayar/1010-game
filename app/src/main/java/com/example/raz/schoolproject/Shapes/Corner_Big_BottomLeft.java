@@ -10,9 +10,9 @@ public class Corner_Big_BottomLeft extends Shape {
         shapeMatrix = new ShapeType[3][3];
 
         shapeMatrix[0][0] = ShapeType.CORNER_BIG;
-        shapeMatrix[0][1] = ShapeType.CORNER_BIG;
-        shapeMatrix[0][2] = ShapeType.CORNER_BIG;
-        shapeMatrix[1][2] = ShapeType.CORNER_BIG;
+        shapeMatrix[1][0] = ShapeType.CORNER_BIG;
+        shapeMatrix[2][0] = ShapeType.CORNER_BIG;
+        shapeMatrix[2][1] = ShapeType.CORNER_BIG;
         shapeMatrix[2][2] = ShapeType.CORNER_BIG;
     }
 }

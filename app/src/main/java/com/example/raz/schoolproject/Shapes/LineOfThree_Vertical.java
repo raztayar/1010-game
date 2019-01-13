@@ -10,5 +10,7 @@ public class LineOfThree_Vertical extends Shape {
         shapeMatrix = new ShapeType[3][1];
 
         shapeMatrix[0][0] = ShapeType.LINE_OF_THREE;
+        shapeMatrix[1][0] = ShapeType.LINE_OF_THREE;
+        shapeMatrix[2][0] = ShapeType.LINE_OF_THREE;
     }
 }
