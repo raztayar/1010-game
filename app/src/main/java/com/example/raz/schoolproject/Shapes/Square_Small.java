@@ -11,4 +11,8 @@ public class Square_Small extends Shape {
 
         shapeMatrix[0][0] = ShapeType.SQUARE_SMALL;
     }
+
+    static {
+        Shape.registerShapeClass(Square_Small.class);
+    }
 }

@@ -14,4 +14,8 @@ public class Square_Medium extends Shape {
         shapeMatrix[1][0] = ShapeType.SQUARE_MEDIUM;
         shapeMatrix[1][1] = ShapeType.SQUARE_MEDIUM;
     }
+
+    static {
+        Shape.registerShapeClass(Square_Medium.class);
+    }
 }

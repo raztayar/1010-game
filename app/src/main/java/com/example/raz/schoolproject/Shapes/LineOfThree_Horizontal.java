@@ -13,4 +13,8 @@ public class LineOfThree_Horizontal extends Shape {
         shapeMatrix[0][1] = ShapeType.LINE_OF_THREE;
         shapeMatrix[0][2] = ShapeType.LINE_OF_THREE;
     }
+
+    static {
+        Shape.registerShapeClass(LineOfThree_Horizontal.class);
+    }
 }

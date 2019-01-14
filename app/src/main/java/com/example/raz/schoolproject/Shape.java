@@ -13,9 +13,28 @@ import android.widget.TextView;
 
 import com.example.raz.schoolproject.Activities.GameActivity;
 
+import java.util.HashMap;
+
 public abstract class Shape implements IShape {
 
     protected ShapeType[][] shapeMatrix;
+
+    private static HashMap<String, Class> classNameToClass = new HashMap<>();
+
+    public Shape() {
+        if (classNameToClass.get(this.getClass().getName()) == null) {
+            throw new RuntimeException("you forgot to register class " + this.getClass().getName());
+        }
+    }
+    static protected void registerShapeClass(Class clazz) {
+        classNameToClass.put(clazz.getName(), clazz);
+
+    }
+
+    static Class getShapeClassFromName(String name) {
+        return classNameToClass.get(name);
+    }
+
 
     public ShapeType[][] getShapeMatrix(){
         return shapeMatrix;
@@ -82,7 +101,7 @@ public abstract class Shape implements IShape {
                 textView.setLayoutParams(params);
                 row.addView(textView);
                 if(shapeMatrix[i][j] != null){
-                    textView.setBackgroundColor(((GameActivity)context).theme.colorHashMap.get(shapeMatrix[i][j]));
+                    textView.setBackgroundColor(((GameActivity) context).theme.getColorHashMap().get(shapeMatrix[i][j]));
                 }
             }
         }

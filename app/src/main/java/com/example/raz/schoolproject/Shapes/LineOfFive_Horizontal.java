@@ -15,4 +15,8 @@ public class LineOfFive_Horizontal extends Shape {
         shapeMatrix[0][3] = ShapeType.LINE_OF_FIVE;
         shapeMatrix[0][4] = ShapeType.LINE_OF_FIVE;
     }
+
+    static {
+        Shape.registerShapeClass(LineOfFive_Horizontal.class);
+    }
 }

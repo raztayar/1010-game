@@ -9,9 +9,11 @@ public class Game {
 
     private final static int BOARD_HEIGHT = 10, BOARD_WIDTH = 10;
 
-    private IShape[] shapeQueue; // maybe use tags
+    private IShape[] shapeQueue;
 
     private GameActivity gameActivity;
+
+    private LocalDataBase gameDataBase;
 
     private ShapeType[][] board;
     private GameStats gameStats;
@@ -21,6 +23,7 @@ public class Game {
         this.gameStats = gameStats;
         this.shapeQueue = new IShape[3];
         this.gameActivity = gameActivity;
+        gameDataBase = new LocalDataBase(gameActivity);
     }
 
     public Game(GameActivity gameActivity){
@@ -28,6 +31,7 @@ public class Game {
         this.gameStats = new GameStats();
         this.shapeQueue = new IShape[3];
         this.gameActivity = gameActivity;
+        gameDataBase = new LocalDataBase(gameActivity);
     }
 
     public GameStats getGameStats() {
@@ -41,7 +45,9 @@ public class Game {
     }
 
     public void bringShapesToQueue() {
-        if(hasShapesInQueue()) throw new RuntimeException("There are still shapes in queue");
+        if(hasShapesInQueue()) {
+            throw new RuntimeException("There are still shapes in queue");
+        }
         for(int i = 0; i<3; i++){
             bringShapeToSlot(i);
         }
@@ -55,10 +61,7 @@ public class Game {
     }
 
     private void bringShapeToSlot(final int i) {
-        IShape shape = Utilities.createRandomShape();
-
-        gameActivity.getQueueSlotLayout(i).addView(shape.createShapeAsTableLayout(gameActivity));
-        shapeQueue[i] = shape;
+        shapeQueue[i] = Utilities.createRandomShape();
     }
 
     public void removeShapesFromQueue(){
@@ -68,8 +71,6 @@ public class Game {
     }
 
     public void removeShapeFromSlot(int i){
-        LinearLayout slotLayout = gameActivity.getQueueSlotLayout(i);
-        slotLayout.removeAllViews();
         gameActivity.setCurrentSlotIndex(-1);
         shapeQueue[i] = null;
     }
@@ -116,5 +117,35 @@ public class Game {
             }
         }
         return true;
+    }
+
+    public void saveToDataBase(String userId) {
+
+        gameDataBase.save("board:" + userId, board);
+
+        String[] shapeTypes = new String[3];
+        for(int i = 0; i < shapeQueue.length; i++) {
+            gameDataBase.save("queueSlot" + i + ":" + userId, shapeQueue[i]);
+            if (shapeQueue[i] != null) {
+                shapeTypes[i] = shapeQueue[i].getClass().getName();
+            }
+        }
+        gameDataBase.save("shapeTypes:" + userId, shapeTypes);
+    }
+
+    public void loadFromDataBase(String userId) {
+        ShapeType[][] boardLoad = gameDataBase.load("board:" + userId, ShapeType[][].class);
+        if (boardLoad != null) {
+            board = boardLoad;
+        }
+
+        String[] shapeTypes = gameDataBase.load("shapeTypes:" + userId, String[].class);
+        if(shapeTypes != null) {
+            for (int i = 0; i < shapeTypes.length; i++) {
+                if (shapeTypes[i] != null) {
+                    shapeQueue[i] = (IShape) gameDataBase.load("queueSlot" + i + ":" + userId, Shape.getShapeClassFromName(shapeTypes[i]));
+                }
+            }
+        }
     }
 }

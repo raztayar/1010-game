@@ -13,4 +13,8 @@ public class Corner_Small_TopLeft extends Shape {
         shapeMatrix[0][1] = ShapeType.CORNER_SMALL;
         shapeMatrix[1][0] = ShapeType.CORNER_SMALL;
     }
+
+    static {
+        Shape.registerShapeClass(Corner_Small_TopLeft.class);
+    }
 }
