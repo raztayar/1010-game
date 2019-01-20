@@ -12,8 +12,4 @@ public class LineOfTwo_Vertical extends Shape {
         shapeMatrix[0][0] = ShapeType.LINE_OF_TWO;
         shapeMatrix[1][0] = ShapeType.LINE_OF_TWO;
     }
-
-    static {
-        Shape.registerShapeClass(LineOfTwo_Vertical.class);
-    }
 }

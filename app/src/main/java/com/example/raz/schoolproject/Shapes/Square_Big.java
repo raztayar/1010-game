@@ -19,8 +19,4 @@ public class Square_Big extends Shape {
         shapeMatrix[2][0] = ShapeType.SQUARE_BIG;
         shapeMatrix[2][1] = ShapeType.SQUARE_BIG;
     }
-
-    static {
-        Shape.registerShapeClass(Square_Big.class);
-    }
 }

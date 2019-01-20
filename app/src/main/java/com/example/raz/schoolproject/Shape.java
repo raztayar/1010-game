@@ -19,23 +19,6 @@ public abstract class Shape implements IShape {
 
     protected ShapeType[][] shapeMatrix;
 
-    private static HashMap<String, Class> classNameToClass = new HashMap<>();
-
-    public Shape() {
-        if (classNameToClass.get(this.getClass().getName()) == null) {
-            throw new RuntimeException("you forgot to register class " + this.getClass().getName());
-        }
-    }
-    static protected void registerShapeClass(Class clazz) {
-        classNameToClass.put(clazz.getName(), clazz);
-
-    }
-
-    static Class getShapeClassFromName(String name) {
-        return classNameToClass.get(name);
-    }
-
-
     public ShapeType[][] getShapeMatrix(){
         return shapeMatrix;
     }

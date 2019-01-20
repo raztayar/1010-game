@@ -15,8 +15,4 @@ public class Corner_Big_TopLeft extends Shape {
         shapeMatrix[1][0] = ShapeType.CORNER_BIG;
         shapeMatrix[2][0] = ShapeType.CORNER_BIG;
     }
-
-    static {
-        Shape.registerShapeClass(Corner_Big_TopLeft.class);
-    }
 }

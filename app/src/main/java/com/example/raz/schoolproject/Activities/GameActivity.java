@@ -69,7 +69,9 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
-        game.bringShapesToQueue();
+        if(!game.hasShapesInQueue()) {
+            game.bringShapesToQueue();
+        }
         updateQueueView();
 
 

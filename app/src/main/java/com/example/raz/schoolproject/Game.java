@@ -143,7 +143,11 @@ public class Game {
         if(shapeTypes != null) {
             for (int i = 0; i < shapeTypes.length; i++) {
                 if (shapeTypes[i] != null) {
-                    shapeQueue[i] = (IShape) gameDataBase.load("queueSlot" + i + ":" + userId, Shape.getShapeClassFromName(shapeTypes[i]));
+                    try {
+                        shapeQueue[i] = (IShape) gameDataBase.load("queueSlot" + i + ":" + userId, Class.forName(shapeTypes[i]));
+                    } catch (ClassNotFoundException e) {
+                        shapeQueue[i] = null;
+                    }
                 }
             }
         }

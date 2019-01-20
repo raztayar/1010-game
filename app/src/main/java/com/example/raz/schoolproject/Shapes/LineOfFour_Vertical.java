@@ -14,8 +14,4 @@ public class LineOfFour_Vertical extends Shape {
         shapeMatrix[2][0] = ShapeType.LINE_OF_FOUR;
         shapeMatrix[3][0] = ShapeType.LINE_OF_FOUR;
     }
-
-    static {
-        Shape.registerShapeClass(LineOfFour_Vertical.class);
-    }
 }
