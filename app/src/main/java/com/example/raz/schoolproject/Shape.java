@@ -3,6 +3,7 @@ package com.example.raz.schoolproject;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.util.Log;
 import android.util.TypedValue;
 import android.widget.LinearLayout;
@@ -25,13 +26,13 @@ public abstract class Shape implements IShape {
 
     @Override
     public boolean isPlaceable(Point point, ShapeType[][] board) {
-        if (point.getX() > board.length - shapeMatrix.length) return false;
-        else if (point.getY() > board[0].length - shapeMatrix[0].length) return false;
+        if (point.x > board.length - shapeMatrix.length) return false;
+        else if (point.y > board[0].length - shapeMatrix[0].length) return false;
 
         for (int i=0; i < shapeMatrix.length; i++){
             for (int j=0; j < shapeMatrix[i].length; j++){
                 if (shapeMatrix[i][j] != null){
-                    if(board[point.getX() + i][point.getY() + j] != null){
+                    if(board[point.x + i][point.y + j] != null){
                         return false;
                     }
                 }
@@ -58,7 +59,7 @@ public abstract class Shape implements IShape {
             for (int i=0; i < shapeMatrix.length; i++){
                 for (int j=0; j < shapeMatrix[i].length; j++){
                     if (shapeMatrix[i][j] != null){
-                        board[point.getX() + i][point.getY() + j] = shapeMatrix[i][j];
+                        board[point.x + i][point.y + j] = shapeMatrix[i][j];
                     }
                 }
             }
@@ -69,7 +70,7 @@ public abstract class Shape implements IShape {
     }
 
     @Override
-    public TableLayout createShapeAsTableLayout(Context context) {
+    public TableLayout createShapeAsTableLayout(Context context, Theme theme) {
         TableLayout table = new TableLayout(context);
         table.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
@@ -84,7 +85,7 @@ public abstract class Shape implements IShape {
                 textView.setLayoutParams(params);
                 row.addView(textView);
                 if(shapeMatrix[i][j] != null){
-                    textView.setBackgroundColor(((GameActivity) context).theme.getColorHashMap().get(shapeMatrix[i][j]));
+                    textView.setBackgroundColor(theme.getColorHashMap().get(shapeMatrix[i][j]));
                 }
             }
         }

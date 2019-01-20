@@ -26,11 +26,11 @@ import java.util.Random;
 
 public class Utilities {
 
-    static int dpToPixels(Context context, float dp){
+    public static int dpToPixels(Context context, float dp){
         return (int) (context.getResources().getDisplayMetrics().density * dp + 0.5f);
     }
 
-    static IShape createRandomShape() {
+    public static IShape createRandomShape() {
         Random rand = new Random();
         int value = rand.nextInt(19);
 

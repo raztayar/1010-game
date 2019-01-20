@@ -1,6 +1,7 @@
 package com.example.raz.schoolproject;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 
@@ -12,5 +13,5 @@ public interface IShape {
 
     void placeShape(Point point, ShapeType[][] board);
 
-    TableLayout createShapeAsTableLayout(Context context);
+    TableLayout createShapeAsTableLayout(Context context, Theme theme);
 }

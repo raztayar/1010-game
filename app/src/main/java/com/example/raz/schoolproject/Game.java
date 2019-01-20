@@ -7,7 +7,7 @@ import com.example.raz.schoolproject.Shapes.Corner_Big_BottomRight;
 
 public class Game {
 
-    private final static int BOARD_HEIGHT = 10, BOARD_WIDTH = 10;
+    public final static int BOARD_HEIGHT = 10, BOARD_WIDTH = 10;
 
     private IShape[] shapeQueue;
 
