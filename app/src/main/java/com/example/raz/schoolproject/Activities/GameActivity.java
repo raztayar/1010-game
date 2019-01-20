@@ -64,8 +64,7 @@ public class GameActivity extends AppCompatActivity {
         newGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                game.bringShapesToQueue();
-                updateQueueView();
+                resetGame();
             }
         });
 
@@ -108,14 +107,13 @@ public class GameActivity extends AppCompatActivity {
                                 updateQueueView();
 
                                 if (game.isGameOver()) {
-                                    MediaPlayer player = MediaPlayer.create(thisContext, Settings.System.DEFAULT_ALARM_ALERT_URI);
+                                    MediaPlayer.create(thisContext, Settings.System.DEFAULT_ALARM_ALERT_URI).start();
                                     Toast.makeText(thisContext, "GAME OVER", Toast.LENGTH_LONG).show();
                                     resetGame();
                                 }
                             }
                             else {
-                                MediaPlayer player = MediaPlayer.create(thisContext, Settings.System.DEFAULT_NOTIFICATION_URI);
-                                player.start();
+                                MediaPlayer.create(thisContext, Settings.System.DEFAULT_NOTIFICATION_URI).start();
                             }
                         }
                     }
@@ -186,6 +184,7 @@ public class GameActivity extends AppCompatActivity {
 
     private void resetGame() {
         game = new Game(this);
+        game.bringShapesToQueue();
         updateQueueView();
         updateBoardView();
     }
