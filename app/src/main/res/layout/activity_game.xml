@@ -17,13 +17,8 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Get Shapes"
-            android:id="@+id/getShapesButton" />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Remove Shapes"
-            android:id="@+id/removeShapesButton" />
+            android:text="Reset Game"
+            android:id="@+id/newGameButton" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"

@@ -18,9 +18,7 @@ import com.example.raz.schoolproject.Game;
 import com.example.raz.schoolproject.IShape;
 import com.example.raz.schoolproject.Point;
 import com.example.raz.schoolproject.R;
-import com.example.raz.schoolproject.ShapeType;
 import com.example.raz.schoolproject.Theme;
-import com.example.raz.schoolproject.Utilities;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -29,8 +27,7 @@ public class GameActivity extends AppCompatActivity {
 
     public Context thisContext;
 
-    private Button getShapes;
-    private Button removeShapes;
+    private Button newGame;
 
     private int currentSlotIndex = -1;
 
@@ -52,20 +49,19 @@ public class GameActivity extends AppCompatActivity {
 
         Log.d("lalala", "onCreate: ");
 
-        if (game == null){
-            game = new Game(this);
-        }
+        game = new Game(this);
+        game.loadFromDataBase("");
+
         thisContext = this;
         theme = new Theme();
 
-        getShapes = findViewById(R.id.getShapesButton);
-        removeShapes = findViewById(R.id.removeShapesButton);
+        newGame = findViewById(R.id.newGameButton);
         queueSlot1 = findViewById(R.id.slot1);
         queueSlot2 = findViewById(R.id.slot2);
         queueSlot3 = findViewById(R.id.slot3);
         boardView = findViewById(R.id.board);
 
-        getShapes.setOnClickListener(new View.OnClickListener() {
+        newGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 game.bringShapesToQueue();
@@ -73,12 +69,9 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
-        removeShapes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                game.removeShapesFromQueue();
-            }
-        });
+        game.bringShapesToQueue();
+        updateQueueView();
+
 
         for(int i = 0; i < 3; i++){
             final int slotIndex = i;
@@ -115,9 +108,7 @@ public class GameActivity extends AppCompatActivity {
                                 if (game.isGameOver()) {
                                     MediaPlayer player = MediaPlayer.create(thisContext, Settings.System.DEFAULT_ALARM_ALERT_URI);
                                     Toast.makeText(thisContext, "GAME OVER", Toast.LENGTH_LONG).show();
-                                    game = new Game((GameActivity) thisContext);
-                                    updateBoardView();
-                                    updateQueueView();
+                                    resetGame();
                                 }
                             }
                             else {
@@ -189,5 +180,11 @@ public class GameActivity extends AppCompatActivity {
                 getQueueSlotLayout(i).addView(shape.createShapeAsTableLayout(this));
             }
         }
+    }
+
+    private void resetGame() {
+        game = new Game(this);
+        updateQueueView();
+        updateBoardView();
     }
 }

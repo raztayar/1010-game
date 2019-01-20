@@ -1,0 +1,1 @@
+fix shape registration: Shape.getShapeClassFromName(shapeTypes[i]) returns null;
