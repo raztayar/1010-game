@@ -52,7 +52,7 @@ public class GameActivity extends AppCompatActivity {
 
         Log.d("lalala", "onCreate: ");
 
-        newGame = findViewById(R.id.newGameButton);
+        newGame = findViewById(R.id.resetGameButton);
         queueView = findViewById(R.id.queue);
         boardView = findViewById(R.id.board);
 
