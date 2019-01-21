@@ -7,12 +7,14 @@ public class LineOfFive_Vertical extends Shape {
 
     public LineOfFive_Vertical(){
 
-        shapeMatrix = new ShapeType[5][1];
+        shapeType = ShapeType.LINE_OF_FIVE;
 
-        shapeMatrix[0][0] = ShapeType.LINE_OF_FIVE;
-        shapeMatrix[1][0] = ShapeType.LINE_OF_FIVE;
-        shapeMatrix[2][0] = ShapeType.LINE_OF_FIVE;
-        shapeMatrix[3][0] = ShapeType.LINE_OF_FIVE;
-        shapeMatrix[4][0] = ShapeType.LINE_OF_FIVE;
+        shapeMatrix = new boolean[5][1];
+
+        shapeMatrix[0][0] = true;
+        shapeMatrix[1][0] = true;
+        shapeMatrix[2][0] = true;
+        shapeMatrix[3][0] = true;
+        shapeMatrix[4][0] = true;
     }
 }

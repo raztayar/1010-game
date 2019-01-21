@@ -7,11 +7,13 @@ public class LineOfFour_Horizontal extends Shape {
 
     public LineOfFour_Horizontal(){
 
-        shapeMatrix = new ShapeType[1][4];
+        shapeType = ShapeType.LINE_OF_FOUR;
 
-        shapeMatrix[0][0] = ShapeType.LINE_OF_FOUR;
-        shapeMatrix[0][1] = ShapeType.LINE_OF_FOUR;
-        shapeMatrix[0][2] = ShapeType.LINE_OF_FOUR;
-        shapeMatrix[0][3] = ShapeType.LINE_OF_FOUR;
+        shapeMatrix = new boolean[1][4];
+
+        shapeMatrix[0][0] = true;
+        shapeMatrix[0][1] = true;
+        shapeMatrix[0][2] = true;
+        shapeMatrix[0][3] = true;
     }
 }

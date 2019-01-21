@@ -18,9 +18,11 @@ import java.util.HashMap;
 
 public abstract class Shape implements IShape {
 
-    protected ShapeType[][] shapeMatrix;
+    protected ShapeType shapeType;
 
-    public ShapeType[][] getShapeMatrix(){
+    protected boolean[][] shapeMatrix;
+
+    public boolean[][] getShapeMatrix(){
         return shapeMatrix;
     }
 
@@ -31,7 +33,7 @@ public abstract class Shape implements IShape {
 
         for (int i=0; i < shapeMatrix.length; i++){
             for (int j=0; j < shapeMatrix[i].length; j++){
-                if (shapeMatrix[i][j] != null){
+                if (shapeMatrix[i][j]){
                     if(board[point.x + i][point.y + j] != null){
                         return false;
                     }
@@ -58,8 +60,8 @@ public abstract class Shape implements IShape {
         if(this.isPlaceable(point, board)){
             for (int i=0; i < shapeMatrix.length; i++){
                 for (int j=0; j < shapeMatrix[i].length; j++){
-                    if (shapeMatrix[i][j] != null){
-                        board[point.x + i][point.y + j] = shapeMatrix[i][j];
+                    if (shapeMatrix[i][j]){
+                        board[point.x + i][point.y + j] = shapeType;
                     }
                 }
             }
@@ -84,8 +86,8 @@ public abstract class Shape implements IShape {
                 Log.d("lol", params.debug(""));
                 textView.setLayoutParams(params);
                 row.addView(textView);
-                if(shapeMatrix[i][j] != null){
-                    textView.setBackgroundColor(theme.getColorHashMap().get(shapeMatrix[i][j]));
+                if(shapeMatrix[i][j]){
+                    textView.setBackgroundColor(theme.getColorHashMap().get(shapeType));
                 }
             }
         }

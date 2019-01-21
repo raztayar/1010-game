@@ -7,8 +7,10 @@ public class Square_Small extends Shape {
 
     public Square_Small(){
 
-        shapeMatrix = new ShapeType[1][1];
+        shapeType = ShapeType.SQUARE_SMALL;
 
-        shapeMatrix[0][0] = ShapeType.SQUARE_SMALL;
+        shapeMatrix = new boolean[1][1];
+
+        shapeMatrix[0][0] = true;
     }
 }
