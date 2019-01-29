@@ -14,4 +14,6 @@ public interface IShape {
     void placeShape(Point point, ShapeType[][] board);
 
     TableLayout createShapeAsTableLayout(Context context, Theme theme);
+
+    Point getMidPoint();
 }

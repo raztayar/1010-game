@@ -28,8 +28,9 @@ public abstract class Shape implements IShape {
 
     @Override
     public boolean isPlaceable(Point point, ShapeType[][] board) {
-        if (point.x > board.length - shapeMatrix.length) return false;
-        else if (point.y > board[0].length - shapeMatrix[0].length) return false;
+
+        if (point.x < 0 || point.x > board.length - shapeMatrix.length) return false;
+        else if (point.y < 0 || point.y > board[0].length - shapeMatrix[0].length) return false;
 
         for (int i=0; i < shapeMatrix.length; i++){
             for (int j=0; j < shapeMatrix[i].length; j++){
@@ -83,7 +84,6 @@ public abstract class Shape implements IShape {
                 TextView textView = new TextView(context);
                 TableRow.LayoutParams params = new TableRow.LayoutParams(Utilities.dpToPixels(context, 32), Utilities.dpToPixels(context, 32));
                 params.setMargins(Utilities.dpToPixels(context, 2), Utilities.dpToPixels(context, 2), Utilities.dpToPixels(context, 2), Utilities.dpToPixels(context, 2));
-                Log.d("lol", params.debug(""));
                 textView.setLayoutParams(params);
                 row.addView(textView);
                 if(shapeMatrix[i][j]){
@@ -93,5 +93,10 @@ public abstract class Shape implements IShape {
         }
 
         return table;
+    }
+
+    @Override
+    public Point getMidPoint() {
+        return new Point((shapeMatrix.length - 1) / 2, (shapeMatrix[0].length - 1) / 2);
     }
 }

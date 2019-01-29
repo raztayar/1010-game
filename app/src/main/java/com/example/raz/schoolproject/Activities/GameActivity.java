@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.example.raz.schoolproject.Game;
 import com.example.raz.schoolproject.IShape;
 import com.example.raz.schoolproject.R;
+import com.example.raz.schoolproject.Shape;
 import com.example.raz.schoolproject.Theme;
 import com.example.raz.schoolproject.Utilities;
 
@@ -97,7 +98,48 @@ public class GameActivity extends AppCompatActivity {
             });
         }
 
-        for (int i = 0; i < boardView.getChildCount(); i++) {
+        boardView.setOnDragListener(new View.OnDragListener() {
+            @Override
+            public boolean onDrag(View v, DragEvent event) {
+                switch (event.getAction()) {
+                    case DragEvent.ACTION_DRAG_STARTED:
+                        Log.d("drag started", "************");
+                        return true;
+                    case DragEvent.ACTION_DROP:
+                        Log.d("drop coordinates", "x:" + event.getY() + "   y:" + event.getX() + "    data:" + event.getLocalState());
+                        if(currentSlotIndex != -1){
+                            IShape currentShapeToPlace = game.getShapeQueue()[currentSlotIndex];
+                            Point placePoint = getPlacePointFromCoordinates(event.getY(), event.getX(), (Shape) currentShapeToPlace);
+                            Log.d("place point", "place point:" + placePoint.toString() + "    data:" + event.getLocalState());
+                            if(currentShapeToPlace.isPlaceable(placePoint, game.getBoard())){
+                                currentShapeToPlace.placeShape(placePoint, game.getBoard());
+                                game.removeFullRowsAndColumns();
+                                updateBoardView();
+
+                                game.removeShapeFromSlot(currentSlotIndex);
+                                if(!game.hasShapesInQueue()) {
+                                    game.bringShapesToQueue();
+                                }
+                                updateQueueView();
+
+                                if (game.isGameOver()) {
+                                    MediaPlayer.create(thisContext, Settings.System.DEFAULT_ALARM_ALERT_URI).start();
+                                    Toast.makeText(thisContext, "GAME OVER", Toast.LENGTH_LONG).show();
+                                    resetGame();
+                                }
+                            }
+                            else {
+                                MediaPlayer.create(thisContext, Settings.System.DEFAULT_NOTIFICATION_URI).start();
+                            }
+                        }
+                        return true;
+                }
+                return false;
+            }
+        });
+
+
+        /*for (int i = 0; i < boardView.getChildCount(); i++) {
             TableRow row = (TableRow) boardView.getChildAt(i);
             for(int j = 0; j < row.getChildCount(); j++) {
                 final Point point = new Point(i,j);
@@ -135,42 +177,6 @@ public class GameActivity extends AppCompatActivity {
                                 }
                         }
                         return false;
-                    }
-                });
-            }
-        }
-
-
-        /*for (int i = 0; i < boardView.getChildCount(); i++){
-            TableRow row = (TableRow) boardView.getChildAt(i);
-            for(int j = 0; j < row.getChildCount(); j++){
-                final Point point = new Point(i,j);
-                row.getChildAt(j).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(currentSlotIndex != -1){
-                            IShape currentShapeToPlace = game.getShapeQueue()[currentSlotIndex];
-                            if(currentShapeToPlace.isPlaceable(point, game.getBoard())){
-                                currentShapeToPlace.placeShape(point, game.getBoard());
-                                game.removeFullRowsAndColumns();
-                                updateBoardView();
-
-                                game.removeShapeFromSlot(currentSlotIndex);
-                                if(!game.hasShapesInQueue()) {
-                                    game.bringShapesToQueue();
-                                }
-                                updateQueueView();
-
-                                if (game.isGameOver()) {
-                                    MediaPlayer.create(thisContext, Settings.System.DEFAULT_ALARM_ALERT_URI).start();
-                                    Toast.makeText(thisContext, "GAME OVER", Toast.LENGTH_LONG).show();
-                                    resetGame();
-                                }
-                            }
-                            else {
-                                MediaPlayer.create(thisContext, Settings.System.DEFAULT_NOTIFICATION_URI).start();
-                            }
-                        }
                     }
                 });
             }
@@ -253,5 +259,18 @@ public class GameActivity extends AppCompatActivity {
                 row.addView(textView);
             }
         }
+    }
+
+    private Point getPlacePointFromCoordinates(float x, float y, Shape shape) {
+        final float boardSize = 935;
+        double offsetX = 0;
+        double offsetY = 0;
+        if (shape.getShapeMatrix().length % 2 == 0)
+            offsetX = (boardSize / 20);
+        if (shape.getShapeMatrix()[0].length % 2 == 0)
+            offsetY = (boardSize / 20);
+        Point dropPoint = new Point((int) ((x - offsetX) / (boardSize / 10)), (int) ((y - offsetY) / (boardSize / 10)));
+        Log.d("drop point", "drop point" + dropPoint.toString());
+        return new Point(dropPoint.x - shape.getMidPoint().x, dropPoint.y - shape.getMidPoint().y);
     }
 }
