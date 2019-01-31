@@ -33,7 +33,9 @@ public class GameActivity extends AppCompatActivity {
 
     public Context thisContext;
 
-    private Button newGame;
+    private Button resetGame;
+
+    private TextView scoreView;
 
     private int currentSlotIndex = -1;
 
@@ -53,7 +55,8 @@ public class GameActivity extends AppCompatActivity {
 
         Log.d("lalala", "onCreate: ");
 
-        newGame = findViewById(R.id.resetGameButton);
+        resetGame = findViewById(R.id.resetGameButton);
+        scoreView = findViewById(R.id.score);
         queueView = findViewById(R.id.queue);
         boardView = findViewById(R.id.board);
 
@@ -66,7 +69,7 @@ public class GameActivity extends AppCompatActivity {
 
         thisContext = this;
 
-        newGame.setOnClickListener(new View.OnClickListener() {
+        resetGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 resetGame();
@@ -78,6 +81,7 @@ public class GameActivity extends AppCompatActivity {
         }
         updateQueueView();
 
+        updateScoreView();
 
         for(int i = 0; i < 3; i++){
             final int slotIndex = i;
@@ -113,8 +117,11 @@ public class GameActivity extends AppCompatActivity {
                             Log.d("place point", "place point:" + placePoint.toString() + "    data:" + event.getLocalState());
                             if(currentShapeToPlace.isPlaceable(placePoint, game.getBoard())){
                                 currentShapeToPlace.placeShape(placePoint, game.getBoard());
+                                game.addScore(currentShapeToPlace.getShapeScore());
+                                game.addScore(game.getNumOfFullRowsAndColumns() * 10);
                                 game.removeFullRowsAndColumns();
                                 updateBoardView();
+                                updateScoreView();
 
                                 game.removeShapeFromSlot(currentSlotIndex);
                                 if(!game.hasShapesInQueue()) {
@@ -137,50 +144,6 @@ public class GameActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-
-        /*for (int i = 0; i < boardView.getChildCount(); i++) {
-            TableRow row = (TableRow) boardView.getChildAt(i);
-            for(int j = 0; j < row.getChildCount(); j++) {
-                final Point point = new Point(i,j);
-                row.getChildAt(j).setOnDragListener(new View.OnDragListener() {
-                    @Override
-                    public boolean onDrag(View v, DragEvent event) {
-                        switch (event.getAction()) {
-                            case DragEvent.ACTION_DRAG_STARTED:
-                                Log.d("drag started", "************");
-                                return true;
-                            case DragEvent.ACTION_DROP:
-                                Log.d("drop", "x:" + event.getX() + "   y:" + event.getY() + "    data:" + event.getLocalState());
-                                if(currentSlotIndex != -1){
-                                    IShape currentShapeToPlace = game.getShapeQueue()[currentSlotIndex];
-                                    if(currentShapeToPlace.isPlaceable(point, game.getBoard())){
-                                        currentShapeToPlace.placeShape(point, game.getBoard());
-                                        game.removeFullRowsAndColumns();
-                                        updateBoardView();
-
-                                        game.removeShapeFromSlot(currentSlotIndex);
-                                        if(!game.hasShapesInQueue()) {
-                                            game.bringShapesToQueue();
-                                        }
-                                        updateQueueView();
-
-                                        if (game.isGameOver()) {
-                                            MediaPlayer.create(thisContext, Settings.System.DEFAULT_ALARM_ALERT_URI).start();
-                                            Toast.makeText(thisContext, "GAME OVER", Toast.LENGTH_LONG).show();
-                                            resetGame();
-                                        }
-                                    }
-                                    else {
-                                        MediaPlayer.create(thisContext, Settings.System.DEFAULT_NOTIFICATION_URI).start();
-                                    }
-                                }
-                        }
-                        return false;
-                    }
-                });
-            }
-        }*/
     }
 
     @Override
@@ -237,11 +200,18 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+    private void updateScoreView() {
+        scoreView.setText(String.valueOf(game.getGameStats().getScore()));
+    }
+
+
+
     private void resetGame() {
         game = new Game(this);
         game.bringShapesToQueue();
         updateQueueView();
         updateBoardView();
+        updateScoreView();
     }
 
     private void drawBoard() {

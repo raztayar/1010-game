@@ -21,4 +21,9 @@ public class Square_Big extends Shape {
         shapeMatrix[2][0] = true;
         shapeMatrix[2][1] = true;
     }
+
+    @Override
+    public int getShapeScore() {
+        return 9;
+    }
 }

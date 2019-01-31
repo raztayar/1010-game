@@ -16,4 +16,9 @@ public class LineOfFour_Vertical extends Shape {
         shapeMatrix[2][0] = true;
         shapeMatrix[3][0] = true;
     }
+
+    @Override
+    public int getShapeScore() {
+        return 4;
+    }
 }

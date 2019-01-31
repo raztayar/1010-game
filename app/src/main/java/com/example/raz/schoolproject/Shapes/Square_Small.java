@@ -13,4 +13,9 @@ public class Square_Small extends Shape {
 
         shapeMatrix[0][0] = true;
     }
+
+    @Override
+    public int getShapeScore() {
+        return 1;
+    }
 }

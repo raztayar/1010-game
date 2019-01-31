@@ -15,4 +15,9 @@ public class LineOfThree_Horizontal extends Shape {
         shapeMatrix[0][1] = true;
         shapeMatrix[0][2] = true;
     }
+
+    @Override
+    public int getShapeScore() {
+        return 3;
+    }
 }

@@ -15,4 +15,9 @@ public class Corner_Small_BottomRight extends Shape {
         shapeMatrix[1][0] = true;
         shapeMatrix[1][1] = true;
     }
+
+    @Override
+    public int getShapeScore() {
+        return 3;
+    }
 }

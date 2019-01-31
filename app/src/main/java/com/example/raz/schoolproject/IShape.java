@@ -16,4 +16,6 @@ public interface IShape {
     TableLayout createShapeAsTableLayout(Context context, Theme theme);
 
     Point getMidPoint();
+
+    int getShapeScore();
 }

@@ -16,4 +16,9 @@ public class Square_Medium extends Shape {
         shapeMatrix[1][0] = true;
         shapeMatrix[1][1] = true;
     }
+
+    @Override
+    public int getShapeScore() {
+        return 4;
+    }
 }

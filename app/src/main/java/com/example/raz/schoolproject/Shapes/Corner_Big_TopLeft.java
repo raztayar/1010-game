@@ -17,4 +17,9 @@ public class Corner_Big_TopLeft extends Shape {
         shapeMatrix[1][0] = true;
         shapeMatrix[2][0] = true;
     }
+
+    @Override
+    public int getShapeScore() {
+        return 5;
+    }
 }

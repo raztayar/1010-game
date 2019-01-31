@@ -14,4 +14,9 @@ public class LineOfTwo_Horizontal extends Shape {
         shapeMatrix[0][0] = true;
         shapeMatrix[0][1] = true;
     }
+
+    @Override
+    public int getShapeScore() {
+        return 2;
+    }
 }

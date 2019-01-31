@@ -18,7 +18,7 @@ public class Game {
     private ShapeType[][] board;
     private GameStats gameStats;
 
-    public Game(GameStats gameStats, GameActivity gameActivity){
+    public Game(GameActivity gameActivity, GameStats gameStats){
         this.board = new ShapeType[BOARD_WIDTH][BOARD_HEIGHT];
         this.gameStats = gameStats;
         this.shapeQueue = new IShape[3];
@@ -79,31 +79,53 @@ public class Game {
         return board;
     }
 
+    private void removeRow(int row) {
+        for (int i = 0; i < BOARD_HEIGHT; i++) {
+            board[row][i] = null;
+        }
+    }
+
+    private void removeColumn(int column) {
+        for (int i = 0; i < BOARD_WIDTH; i++) {
+            board[i][column] = null;
+        }
+    }
+
+    private boolean isRowFull(int row) {
+        for (int i = 0; i < BOARD_WIDTH; i++) {
+            if (board[row][i] == null) return false;
+        }
+        return true;
+    }
+
+    private boolean isColumnFull(int column) {
+        for (int i = 0; i < BOARD_WIDTH; i++) {
+            if (board[i][column] == null) return false;
+        }
+        return true;
+    }
+
+    public int getNumOfFullRowsAndColumns() {
+        int num = 0;
+        for (int i = 0; i < BOARD_HEIGHT; i++) {
+            if (isRowFull(i)) num++;
+        }
+        for (int i = 0; i < BOARD_WIDTH; i++) {
+            if (isColumnFull(i)) num++;
+        }
+        return num;
+    }
+
     public void removeFullRowsAndColumns(){
-        boolean[] filledRows = new boolean[BOARD_HEIGHT];
-        for (int i = 0; i < BOARD_HEIGHT; i++){
-            filledRows[i] = true;
-        }
-
-        boolean[] filledColumns = new boolean[BOARD_WIDTH];
-        for (int i = 0; i < BOARD_WIDTH; i++){
-            filledColumns[i] = true;
-        }
-
-        for (int i = 0; i < BOARD_HEIGHT; i++){
-            for (int j = 0; j< BOARD_WIDTH; j++){
-                if(board[i][j] == null){
-                    filledRows[i] = false;
-                    filledColumns[j] = false;
-                }
+        for (int i = 0; i < BOARD_HEIGHT; i++) {
+            if(isRowFull(i)) {
+                removeRow(i);
             }
         }
 
-        for (int i = 0; i < BOARD_HEIGHT; i++) {
-            for (int j = 0; j < BOARD_WIDTH; j++) {
-                if (filledRows[i] || filledColumns[j]) {
-                    board[i][j] = null;
-                }
+        for (int i = 0; i < BOARD_WIDTH; i++) {
+            if (isColumnFull(i)) {
+                removeColumn(i);
             }
         }
     }
@@ -131,6 +153,8 @@ public class Game {
             }
         }
         gameDataBase.save("shapeTypes:" + userId, shapeTypes);
+
+        gameDataBase.save("gameStats:" + userId, gameStats);
     }
 
     public void loadFromDataBase(String userId) {
@@ -151,5 +175,21 @@ public class Game {
                 }
             }
         }
+
+        GameStats gameStatsLoad = gameDataBase.load("gameStats:" + userId, GameStats.class);
+        if (gameStatsLoad != null) {
+            gameStats = gameStatsLoad;
+        }
+    }
+
+    public void updateHighScore(String userId) {
+        int currentHighScore = gameDataBase.load("highScoreGameStats:" + userId, GameStats.class).getScore();
+        if(gameStats.getScore() > currentHighScore) {
+            gameDataBase.save("highScoreGameStats:" + userId, gameStats);
+        }
+    }
+
+    public void addScore(int scoreToAdd) {
+        gameStats.setScore(gameStats.getScore() + scoreToAdd);
     }
 }
