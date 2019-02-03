@@ -8,8 +8,9 @@ public class Theme {
 
     private HashMap<ShapeType, Integer> colorHashMap;
 
-    private int primaryColor;
+    private int backgroundColor;
     private int secondaryColor;
+    private int emptySquareColor;
 
     public Theme() {
         this.colorHashMap = new HashMap<>();
@@ -22,11 +23,14 @@ public class Theme {
         colorHashMap.put(ShapeType.LINE_OF_FIVE, Color.parseColor("#FF2D1A"));
         colorHashMap.put(ShapeType.CORNER_SMALL, Color.parseColor("#01912A"));
         colorHashMap.put(ShapeType.CORNER_BIG, Color.parseColor("#2A8CF5"));
+        backgroundColor = Color.WHITE;
+        emptySquareColor = Color.parseColor("#BEB8B8");
+
     }
 
-    public Theme(HashMap<ShapeType, Integer> colorHashMap, int primaryColor, int secondaryColor) {
+    public Theme(HashMap<ShapeType, Integer> colorHashMap, int backgroundColor, int secondaryColor) {
         this.colorHashMap = colorHashMap;
-        this.primaryColor = primaryColor;
+        this.backgroundColor = backgroundColor;
         this.secondaryColor = secondaryColor;
     }
 
@@ -36,5 +40,13 @@ public class Theme {
 
     public void setColorHashMap(HashMap<ShapeType, Integer> colorHashMap) {
         this.colorHashMap = colorHashMap;
+    }
+
+    public int getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    public int getEmptySquareColor() {
+        return emptySquareColor;
     }
 }

@@ -1,9 +1,6 @@
 package com.example.raz.schoolproject;
 
-import android.widget.LinearLayout;
-
 import com.example.raz.schoolproject.Activities.GameActivity;
-import com.example.raz.schoolproject.Shapes.Corner_Big_BottomRight;
 
 public class Game {
 
@@ -39,10 +36,6 @@ public class Game {
     }
 
     public IShape[] getShapeQueue() { return shapeQueue; }
-
-    public void updateTimeElapsed() {
-        gameStats.setElapsedTimeInMillis(System.currentTimeMillis() - gameStats.getTimeOfStartInMillis());
-    }
 
     public void bringShapesToQueue() {
         if(hasShapesInQueue()) {
@@ -191,5 +184,14 @@ public class Game {
 
     public void addScore(int scoreToAdd) {
         gameStats.setScore(gameStats.getScore() + scoreToAdd);
+    }
+
+    public void pauseAndUpdateTimer() {
+        gameStats.updateTimer();
+        gameStats.pauseTimer();
+    }
+
+    public void resumeTimer() {
+        gameStats.startTimer();
     }
 }

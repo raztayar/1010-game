@@ -7,9 +7,12 @@
     android:weightSum="5"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".Activities.GameActivity">
+    android:id="@+id/mainGameActivityLayout"
+    tools:context=".Activities.GameActivity"
+    >
 
     <LinearLayout
+        android:baselineAligned="false"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -52,6 +55,7 @@
         </TableLayout>
     </LinearLayout>
     <LinearLayout
+        android:baselineAligned="false"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -60,7 +64,7 @@
         android:orientation="horizontal"
         android:id="@+id/queue">
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
@@ -69,7 +73,7 @@
             android:tag="" >
         </LinearLayout>
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
@@ -78,7 +82,7 @@
             android:tag="" >
         </LinearLayout>
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"

@@ -1,7 +1,6 @@
 package com.example.raz.schoolproject.Activities;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.provider.Settings;
@@ -62,6 +61,8 @@ public class GameActivity extends AppCompatActivity {
 
         theme = new Theme();
 
+        findViewById(R.id.mainGameActivityLayout).setBackgroundColor(theme.getBackgroundColor());
+
         drawBoard();
 
         game = new Game(this);
@@ -82,6 +83,8 @@ public class GameActivity extends AppCompatActivity {
         updateQueueView();
 
         updateScoreView();
+
+        game.resumeTimer();
 
         for(int i = 0; i < 3; i++){
             final int slotIndex = i;
@@ -108,36 +111,42 @@ public class GameActivity extends AppCompatActivity {
                 switch (event.getAction()) {
                     case DragEvent.ACTION_DRAG_STARTED:
                         Log.d("drag started", "************");
+                        getQueueSlotLayout(currentSlotIndex).setVisibility(View.INVISIBLE);
                         return true;
                     case DragEvent.ACTION_DROP:
                         Log.d("drop coordinates", "x:" + event.getY() + "   y:" + event.getX() + "    data:" + event.getLocalState());
-                        if(currentSlotIndex != -1){
-                            IShape currentShapeToPlace = game.getShapeQueue()[currentSlotIndex];
-                            Point placePoint = getPlacePointFromCoordinates(event.getY(), event.getX(), (Shape) currentShapeToPlace);
-                            Log.d("place point", "place point:" + placePoint.toString() + "    data:" + event.getLocalState());
-                            if(currentShapeToPlace.isPlaceable(placePoint, game.getBoard())){
-                                currentShapeToPlace.placeShape(placePoint, game.getBoard());
-                                game.addScore(currentShapeToPlace.getShapeScore());
-                                game.addScore(game.getNumOfFullRowsAndColumns() * 10);
-                                game.removeFullRowsAndColumns();
-                                updateBoardView();
-                                updateScoreView();
 
-                                game.removeShapeFromSlot(currentSlotIndex);
-                                if(!game.hasShapesInQueue()) {
-                                    game.bringShapesToQueue();
-                                }
-                                updateQueueView();
+                        getQueueSlotLayout(currentSlotIndex).setVisibility(View.VISIBLE);
+                        IShape currentShapeToPlace = game.getShapeQueue()[currentSlotIndex];
+                        Point placePoint = getPlacePointFromCoordinates(event.getY(), event.getX(), (Shape) currentShapeToPlace);
+                        Log.d("place point", "place point:" + placePoint.toString() + "    data:" + event.getLocalState());
+                        if(currentShapeToPlace.isPlaceable(placePoint, game.getBoard())){
+                            currentShapeToPlace.placeShape(placePoint, game.getBoard());
+                            game.addScore(currentShapeToPlace.getShapeScore());
+                            game.addScore(game.getNumOfFullRowsAndColumns() * 10);
+                            game.removeFullRowsAndColumns();
+                            updateBoardView();
+                            updateScoreView();
 
-                                if (game.isGameOver()) {
-                                    MediaPlayer.create(thisContext, Settings.System.DEFAULT_ALARM_ALERT_URI).start();
-                                    Toast.makeText(thisContext, "GAME OVER", Toast.LENGTH_LONG).show();
-                                    resetGame();
-                                }
+                            game.removeShapeFromSlot(currentSlotIndex);
+                            if(!game.hasShapesInQueue()) {
+                                game.bringShapesToQueue();
                             }
-                            else {
-                                MediaPlayer.create(thisContext, Settings.System.DEFAULT_NOTIFICATION_URI).start();
+                            updateQueueView();
+
+                            if (game.isGameOver()) {
+                                MediaPlayer.create(thisContext, Settings.System.DEFAULT_ALARM_ALERT_URI).start();
+                                Toast.makeText(thisContext, "GAME OVER", Toast.LENGTH_LONG).show();
+                                resetGame();
                             }
+                        }
+                        else {
+                            MediaPlayer.create(thisContext, Settings.System.DEFAULT_NOTIFICATION_URI).start();
+                        }
+                        return true;
+                    case DragEvent.ACTION_DRAG_ENDED:
+                        if (currentSlotIndex != -1) {
+                            getQueueSlotLayout(currentSlotIndex).setVisibility(View.VISIBLE);
                         }
                         return true;
                 }
@@ -150,12 +159,14 @@ public class GameActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         game.saveToDataBase("");
+        game.pauseAndUpdateTimer();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         game.loadFromDataBase("");
+        game.resumeTimer();
         updateBoardView();
         updateQueueView();
     }
@@ -175,8 +186,6 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void updateBoardView(){
-        int emptyColor = Color.parseColor("#BEB8B8");
-
         for (int i = 0; i < boardView.getChildCount(); i++) {
             TableRow row = (TableRow) boardView.getChildAt(i);
             for (int j = 0; j < row.getChildCount(); j++) {
@@ -184,7 +193,7 @@ public class GameActivity extends AppCompatActivity {
                     row.getChildAt(j).setBackgroundColor(theme.getColorHashMap().get(game.getBoard()[i][j]));
                 }
                 else{
-                    row.getChildAt(j).setBackgroundColor(emptyColor);
+                    row.getChildAt(j).setBackgroundColor(theme.getEmptySquareColor());
                 }
             }
         }
@@ -205,7 +214,6 @@ public class GameActivity extends AppCompatActivity {
     }
 
 
-
     private void resetGame() {
         game = new Game(this);
         game.bringShapesToQueue();
@@ -223,7 +231,7 @@ public class GameActivity extends AppCompatActivity {
                 TableRow.LayoutParams params = new TableRow.LayoutParams(Utilities.dpToPixels(this, 32), Utilities.dpToPixels(this, 32));
                 params.setMargins(Utilities.dpToPixels(this, 2), Utilities.dpToPixels(this, 2), Utilities.dpToPixels(this, 2), Utilities.dpToPixels(this, 2));
                 textView.setLayoutParams(params);
-                textView.setBackgroundColor(Color.parseColor("#BEB8B8"));
+                textView.setBackgroundColor(theme.getEmptySquareColor());
                 textView.setGravity(Gravity.CENTER);
                 textView.setTag(new Point(i, j));
                 row.addView(textView);
