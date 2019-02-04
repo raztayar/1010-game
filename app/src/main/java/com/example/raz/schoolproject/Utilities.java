@@ -22,12 +22,22 @@ import com.example.raz.schoolproject.Shapes.Square_Big;
 import com.example.raz.schoolproject.Shapes.Square_Medium;
 import com.example.raz.schoolproject.Shapes.Square_Small;
 
+import java.util.Locale;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class Utilities {
 
     public static int dpToPixels(Context context, float dp){
         return (int) (context.getResources().getDisplayMetrics().density * dp + 0.5f);
+    }
+
+    public static String millisToString(long millis) {
+        long seconds = millis / 1000;
+        long s = seconds % 60;
+        long m = (seconds / 60) % 60;
+        long h = (seconds / (60 * 60)) % 24;
+        return String.format(Locale.getDefault(), "%dh:%02dm:%02ds", h,m,s);
     }
 
     public static IShape createRandomShape() {

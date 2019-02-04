@@ -25,14 +25,14 @@ import com.example.raz.schoolproject.Shape;
 import com.example.raz.schoolproject.Theme;
 import com.example.raz.schoolproject.Utilities;
 
+import java.util.Date;
+
 public class GameActivity extends AppCompatActivity {
 
     private Game game;
     public Theme theme;
 
     public Context thisContext;
-
-    private Button resetGame;
 
     private TextView scoreView;
 
@@ -54,7 +54,7 @@ public class GameActivity extends AppCompatActivity {
 
         Log.d("lalala", "onCreate: ");
 
-        resetGame = findViewById(R.id.resetGameButton);
+        Button resetGame = findViewById(R.id.resetGameButton);
         scoreView = findViewById(R.id.score);
         queueView = findViewById(R.id.queue);
         boardView = findViewById(R.id.board);
@@ -83,8 +83,6 @@ public class GameActivity extends AppCompatActivity {
         updateQueueView();
 
         updateScoreView();
-
-        game.resumeTimer();
 
         for(int i = 0; i < 3; i++){
             final int slotIndex = i;
@@ -136,8 +134,8 @@ public class GameActivity extends AppCompatActivity {
 
                             if (game.isGameOver()) {
                                 MediaPlayer.create(thisContext, Settings.System.DEFAULT_ALARM_ALERT_URI).start();
-                                Toast.makeText(thisContext, "GAME OVER", Toast.LENGTH_LONG).show();
-                                resetGame();
+                                game.pauseAndUpdateTimer();
+                                Toast.makeText(thisContext, "GAME OVER, " + "it took you: " + Utilities.millisToString(game.getGameStats().getTimerInMillis()) + ", to get: " + game.getGameStats().getScore(), Toast.LENGTH_LONG).show();
                             }
                         }
                         else {
@@ -158,8 +156,8 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        game.saveToDataBase("");
         game.pauseAndUpdateTimer();
+        game.saveToDataBase("");
     }
 
     @Override
@@ -211,6 +209,7 @@ public class GameActivity extends AppCompatActivity {
 
     private void updateScoreView() {
         scoreView.setText(String.valueOf(game.getGameStats().getScore()));
+        scoreView.setTextColor(theme.getScoreColor());
     }
 
 

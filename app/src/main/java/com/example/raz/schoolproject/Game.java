@@ -188,10 +188,10 @@ public class Game {
 
     public void pauseAndUpdateTimer() {
         gameStats.updateTimer();
-        gameStats.pauseTimer();
+        gameStats.stopTempTimer();
     }
 
     public void resumeTimer() {
-        gameStats.startTimer();
+        gameStats.startTempTimer();
     }
 }

@@ -1,5 +1,7 @@
 package com.example.raz.schoolproject;
 
+import android.util.Log;
+
 import java.util.Date;
 
 public class GameStats {
@@ -9,8 +11,8 @@ public class GameStats {
     private Date date;
     private long timerInMillis;
     //hotzone
-    private long timerStartTime;
-    private boolean isTimerRunning;
+    private long tempTimerStartTime;
+    private boolean isTimerRunning = false;
 
 
     public GameStats(){
@@ -18,6 +20,7 @@ public class GameStats {
         this.numberOfShapesPlaced = 0;
         this.date = new Date();
         this.timerInMillis = 0;
+        startTempTimer();
     }
 
     public int getScore() {
@@ -28,8 +31,8 @@ public class GameStats {
         this.score = score;
     }
 
-    public void startTimer() {
-        timerStartTime = System.currentTimeMillis();
+    public void startTempTimer() {
+        tempTimerStartTime = System.currentTimeMillis();
         isTimerRunning = true;
     }
 
@@ -37,11 +40,15 @@ public class GameStats {
         if (!isTimerRunning) {
             throw new RuntimeException("timer isn't running");
         }
-        timerInMillis += System.currentTimeMillis() - timerStartTime;
-        timerStartTime = System.currentTimeMillis();
+        timerInMillis += (System.currentTimeMillis() - tempTimerStartTime);
+        tempTimerStartTime = System.currentTimeMillis();
     }
 
-    public void pauseTimer() {
+    public void stopTempTimer() {
         isTimerRunning = false;
+    }
+
+    public long getTimerInMillis() {
+        return timerInMillis;
     }
 }

@@ -11,6 +11,7 @@ public class Theme {
     private int backgroundColor;
     private int secondaryColor;
     private int emptySquareColor;
+    private int scoreColor;
 
     public Theme() {
         this.colorHashMap = new HashMap<>();
@@ -25,6 +26,7 @@ public class Theme {
         colorHashMap.put(ShapeType.CORNER_BIG, Color.parseColor("#2A8CF5"));
         backgroundColor = Color.WHITE;
         emptySquareColor = Color.parseColor("#BEB8B8");
+        scoreColor = R.color.Orange;
 
     }
 
@@ -48,5 +50,9 @@ public class Theme {
 
     public int getEmptySquareColor() {
         return emptySquareColor;
+    }
+
+    public int getScoreColor() {
+        return scoreColor;
     }
 }
