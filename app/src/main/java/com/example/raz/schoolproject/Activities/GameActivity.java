@@ -58,7 +58,7 @@ public class GameActivity extends AppCompatActivity {
         drawBoard();
 
         game = new Game(this);
-        game.loadFromDataBase("0");
+        game.loadFromDataBase("1");
 
         thisContext = this;
 

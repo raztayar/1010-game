@@ -1,5 +1,7 @@
 package com.example.raz.schoolproject;
 
+import java.util.ArrayList;
+
 public class User {
 
     public static User currentUser;
@@ -9,6 +11,7 @@ public class User {
     private String password;
     private String email;
     private String phoneNumber;
+
 
     public User() {
         userID = 0;
@@ -24,5 +27,13 @@ public class User {
         this.password = password;
         this.email = email;
         this.phoneNumber = phoneNumber;
+    }
+
+    public long getUserID() {
+        return userID;
+    }
+
+    public String getUsername() {
+        return username;
     }
 }

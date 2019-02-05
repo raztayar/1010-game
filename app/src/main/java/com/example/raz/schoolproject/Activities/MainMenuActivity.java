@@ -10,19 +10,25 @@ import com.example.raz.schoolproject.R;
 
 public class MainMenuActivity extends AppCompatActivity {
 
-    private Button gotoGame;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
-        gotoGame = findViewById(R.id.gotoGameButton);
+        Button gotoGame = findViewById(R.id.gotoGameButton);
         gotoGame.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainMenuActivity.this, GameActivity.class));
             }
         } );
+
+        Button gotoRegister = findViewById(R.id.gotoRegisterButton);
+        gotoRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainMenuActivity.this, RegisterActivity.class));
+            }
+        });
     }
 }

@@ -22,6 +22,7 @@ import com.example.raz.schoolproject.Shapes.Square_Big;
 import com.example.raz.schoolproject.Shapes.Square_Medium;
 import com.example.raz.schoolproject.Shapes.Square_Small;
 
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.Random;
 
@@ -89,5 +90,22 @@ public class Utilities {
         }
 
         throw new RuntimeException("Randomizer failed");
+
+    }
+
+    public static long[] addToLongArray(long[] array, long value) {
+        if (array[array.length - 1] != 0) {
+            array = Arrays.copyOf(array, array.length * 2);
+            array[array.length / 2] = value;
+        }
+        else {
+            for(int i = 0; i < array.length; i++) {
+                if (array[i] == 0) {
+                    array[i] = value;
+                    return array;
+                }
+            }
+        }
+        return array;
     }
 }
