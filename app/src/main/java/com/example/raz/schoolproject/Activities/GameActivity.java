@@ -25,8 +25,6 @@ import com.example.raz.schoolproject.Shape;
 import com.example.raz.schoolproject.Theme;
 import com.example.raz.schoolproject.Utilities;
 
-import java.util.Date;
-
 public class GameActivity extends AppCompatActivity {
 
     private Game game;
@@ -42,17 +40,11 @@ public class GameActivity extends AppCompatActivity {
 
     private TableLayout boardView;
 
-    public GameActivity() {
-        Log.d("fdsfsd", "*********************************************");
-    }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-
-        Log.d("lalala", "onCreate: ");
 
         Button resetGame = findViewById(R.id.resetGameButton);
         scoreView = findViewById(R.id.score);
@@ -66,7 +58,7 @@ public class GameActivity extends AppCompatActivity {
         drawBoard();
 
         game = new Game(this);
-        game.loadFromDataBase("");
+        game.loadFromDataBase("0");
 
         thisContext = this;
 
@@ -91,10 +83,17 @@ public class GameActivity extends AppCompatActivity {
                 public boolean onTouch(View v, MotionEvent event) {
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_DOWN:
-                            if(game.getShapeQueue()[slotIndex] != null){
+                            final IShape shape = game.getShapeQueue()[slotIndex];
+                            if(shape != null){
                                 setCurrentSlotIndex(slotIndex);
                                 Log.d("start drag", "x:" + event.getX() + "                y:" + event.getY());
-                                v.startDrag(null, new View.DragShadowBuilder(v), game.getShapeQueue()[slotIndex], 0);
+                                v.startDrag(null, new View.DragShadowBuilder(v) {
+                                    @Override
+                                    public void onProvideShadowMetrics(Point outShadowSize, Point outShadowTouchPoint) {
+                                        super.onProvideShadowMetrics(outShadowSize, outShadowTouchPoint);
+                                        outShadowTouchPoint.set(outShadowTouchPoint.x, outShadowTouchPoint.y);
+                                    }
+                                }, shape, 0);
                             }
                             return true;
                     }
@@ -108,16 +107,12 @@ public class GameActivity extends AppCompatActivity {
             public boolean onDrag(View v, DragEvent event) {
                 switch (event.getAction()) {
                     case DragEvent.ACTION_DRAG_STARTED:
-                        Log.d("drag started", "************");
                         getQueueSlotLayout(currentSlotIndex).setVisibility(View.INVISIBLE);
                         return true;
                     case DragEvent.ACTION_DROP:
-                        Log.d("drop coordinates", "x:" + event.getY() + "   y:" + event.getX() + "    data:" + event.getLocalState());
-
                         getQueueSlotLayout(currentSlotIndex).setVisibility(View.VISIBLE);
                         IShape currentShapeToPlace = game.getShapeQueue()[currentSlotIndex];
                         Point placePoint = getPlacePointFromCoordinates(event.getY(), event.getX(), (Shape) currentShapeToPlace);
-                        Log.d("place point", "place point:" + placePoint.toString() + "    data:" + event.getLocalState());
                         if(currentShapeToPlace.isPlaceable(placePoint, game.getBoard())){
                             currentShapeToPlace.placeShape(placePoint, game.getBoard());
                             game.addScore(currentShapeToPlace.getShapeScore());
@@ -167,6 +162,7 @@ public class GameActivity extends AppCompatActivity {
         game.resumeTimer();
         updateBoardView();
         updateQueueView();
+        updateScoreView();
     }
 
     public LinearLayout getQueueSlotLayout(int i) {
@@ -238,16 +234,15 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    private Point getPlacePointFromCoordinates(float x, float y, Shape shape) {
+    public Point getPlacePointFromCoordinates(float x, float y, Shape shape) {
         final float boardSize = 935;
         double offsetX = 0;
         double offsetY = 0;
         if (shape.getShapeMatrix().length % 2 == 0)
-            offsetX = (boardSize / 20);
+            offsetX += (boardSize / 10 / 2);
         if (shape.getShapeMatrix()[0].length % 2 == 0)
-            offsetY = (boardSize / 20);
+            offsetY += (boardSize / 10 / 2);
         Point dropPoint = new Point((int) ((x - offsetX) / (boardSize / 10)), (int) ((y - offsetY) / (boardSize / 10)));
-        Log.d("drop point", "drop point" + dropPoint.toString());
         return new Point(dropPoint.x - shape.getMidPoint().x, dropPoint.y - shape.getMidPoint().y);
     }
 }

@@ -24,7 +24,6 @@ import com.example.raz.schoolproject.Shapes.Square_Small;
 
 import java.util.Locale;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 public class Utilities {
 

@@ -26,14 +26,15 @@ public class Theme {
         colorHashMap.put(ShapeType.CORNER_BIG, Color.parseColor("#2A8CF5"));
         backgroundColor = Color.WHITE;
         emptySquareColor = Color.parseColor("#BEB8B8");
-        scoreColor = R.color.Orange;
+        scoreColor = Color.parseColor("#ff6600");
 
     }
 
-    public Theme(HashMap<ShapeType, Integer> colorHashMap, int backgroundColor, int secondaryColor) {
+    public Theme(HashMap<ShapeType, Integer> colorHashMap, int backgroundColor, int emptySquareColor, int scoreColor) {
         this.colorHashMap = colorHashMap;
         this.backgroundColor = backgroundColor;
-        this.secondaryColor = secondaryColor;
+        this.emptySquareColor = emptySquareColor;
+        this.scoreColor = scoreColor;
     }
 
     public HashMap<ShapeType, Integer> getColorHashMap() {

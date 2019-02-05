@@ -134,34 +134,34 @@ public class Game {
         return true;
     }
 
-    public void saveToDataBase(String userId) {
+    public void saveToDataBase(String userID) {
 
-        gameDataBase.save("board:" + userId, board);
+        gameDataBase.save("board:" + userID, board);
 
         String[] shapeTypes = new String[3];
         for(int i = 0; i < shapeQueue.length; i++) {
-            gameDataBase.save("queueSlot" + i + ":" + userId, shapeQueue[i]);
+            gameDataBase.save("queueSlot" + i + ":" + userID, shapeQueue[i]);
             if (shapeQueue[i] != null) {
                 shapeTypes[i] = shapeQueue[i].getClass().getName();
             }
         }
-        gameDataBase.save("shapeTypes:" + userId, shapeTypes);
+        gameDataBase.save("shapeTypes:" + userID, shapeTypes);
 
-        gameDataBase.save("gameStats:" + userId, gameStats);
+        gameDataBase.save("gameStats:" + userID, gameStats);
     }
 
-    public void loadFromDataBase(String userId) {
-        ShapeType[][] boardLoad = gameDataBase.load("board:" + userId, ShapeType[][].class);
+    public void loadFromDataBase(String userID) {
+        ShapeType[][] boardLoad = gameDataBase.load("board:" + userID, ShapeType[][].class);
         if (boardLoad != null) {
             board = boardLoad;
         }
 
-        String[] shapeTypes = gameDataBase.load("shapeTypes:" + userId, String[].class);
+        String[] shapeTypes = gameDataBase.load("shapeTypes:" + userID, String[].class);
         if(shapeTypes != null) {
             for (int i = 0; i < shapeTypes.length; i++) {
                 if (shapeTypes[i] != null) {
                     try {
-                        shapeQueue[i] = (IShape) gameDataBase.load("queueSlot" + i + ":" + userId, Class.forName(shapeTypes[i]));
+                        shapeQueue[i] = (IShape) gameDataBase.load("queueSlot" + i + ":" + userID, Class.forName(shapeTypes[i]));
                     } catch (ClassNotFoundException e) {
                         shapeQueue[i] = null;
                     }
@@ -169,16 +169,16 @@ public class Game {
             }
         }
 
-        GameStats gameStatsLoad = gameDataBase.load("gameStats:" + userId, GameStats.class);
+        GameStats gameStatsLoad = gameDataBase.load("gameStats:" + userID, GameStats.class);
         if (gameStatsLoad != null) {
             gameStats = gameStatsLoad;
         }
     }
 
-    public void updateHighScore(String userId) {
-        int currentHighScore = gameDataBase.load("highScoreGameStats:" + userId, GameStats.class).getScore();
+    public void updateHighScore(String userID) {
+        int currentHighScore = gameDataBase.load("highScoreGameStats:" + userID, GameStats.class).getScore();
         if(gameStats.getScore() > currentHighScore) {
-            gameDataBase.save("highScoreGameStats:" + userId, gameStats);
+            gameDataBase.save("highScoreGameStats:" + userID, gameStats);
         }
     }
 

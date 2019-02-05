@@ -8,7 +8,7 @@ import android.widget.Button;
 
 import com.example.raz.schoolproject.R;
 
-public class MainMenu extends AppCompatActivity {
+public class MainMenuActivity extends AppCompatActivity {
 
     private Button gotoGame;
 
@@ -21,7 +21,7 @@ public class MainMenu extends AppCompatActivity {
         gotoGame.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainMenu.this, GameActivity.class));
+                startActivity(new Intent(MainMenuActivity.this, GameActivity.class));
             }
         } );
     }

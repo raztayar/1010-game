@@ -20,6 +20,8 @@ public abstract class Shape implements IShape {
 
     protected ShapeType shapeType;
 
+    private int raisedTouchpointY = 0;
+
     protected boolean[][] shapeMatrix;
 
     public boolean[][] getShapeMatrix(){
@@ -98,5 +100,18 @@ public abstract class Shape implements IShape {
     @Override
     public Point getMidPoint() {
         return new Point((shapeMatrix.length - 1) / 2, (shapeMatrix[0].length - 1) / 2);
+    }
+
+    @Override
+    public int getShapeScore() {
+        int score = 0;
+        for(int i = 0; i < shapeMatrix.length; i++) {
+            for (int j = 0; j < shapeMatrix[i].length; j++) {
+                if (shapeMatrix[i][j]) {
+                    score++;
+                }
+            }
+        }
+        return score;
     }
 }
