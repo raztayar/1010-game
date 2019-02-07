@@ -2,7 +2,10 @@ package com.example.raz.schoolproject;
 
 import android.util.Log;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class GameStats {
 
@@ -14,13 +17,20 @@ public class GameStats {
     private long tempTimerStartTime;
     private boolean isTimerRunning = false;
 
-
     public GameStats(){
         this.score = 0;
         this.numberOfShapesPlaced = 0;
         this.date = new Date();
         this.timerInMillis = 0;
         startTempTimer();
+    }
+
+    public int getNumberOfShapesPlaced() {
+        return numberOfShapesPlaced;
+    }
+
+    public void setNumberOfShapesPlaced(int numberOfShapesPlaced) {
+        this.numberOfShapesPlaced = numberOfShapesPlaced;
     }
 
     public int getScore() {
@@ -50,5 +60,13 @@ public class GameStats {
 
     public long getTimerInMillis() {
         return timerInMillis;
+    }
+
+    @Override
+    public String toString() {
+        return "*** DATE: " + new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(date) + " ***" +
+                "\nscore: " + score +
+                "\nNumber Of Shapes Placed: " + numberOfShapesPlaced +
+                "\nTime: " + Utilities.millisToString(timerInMillis);
     }
 }

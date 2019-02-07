@@ -13,6 +13,8 @@ public class Theme {
     private int emptySquareColor;
     private int scoreColor;
 
+    public static Theme GAME_OVER = new Theme(createGameOverHashMap(), Color.BLACK, Color.DKGRAY, Color.RED);
+
     public Theme() {
         this.colorHashMap = new HashMap<>();
         colorHashMap.put(ShapeType.SQUARE_SMALL, Color.parseColor("#47369E"));
@@ -43,6 +45,21 @@ public class Theme {
 
     public void setColorHashMap(HashMap<ShapeType, Integer> colorHashMap) {
         this.colorHashMap = colorHashMap;
+    }
+
+    private static HashMap<ShapeType, Integer> createGameOverHashMap() {
+        HashMap<ShapeType, Integer> tempColorHashMap = new HashMap<>();
+        tempColorHashMap.put(ShapeType.SQUARE_SMALL, Color.RED);
+        tempColorHashMap.put(ShapeType.SQUARE_MEDIUM, Color.RED);
+        tempColorHashMap.put(ShapeType.SQUARE_BIG, Color.RED);
+        tempColorHashMap.put(ShapeType.LINE_OF_TWO, Color.RED);
+        tempColorHashMap.put(ShapeType.LINE_OF_THREE, Color.RED);
+        tempColorHashMap.put(ShapeType.LINE_OF_FOUR, Color.RED);
+        tempColorHashMap.put(ShapeType.LINE_OF_FIVE, Color.RED);
+        tempColorHashMap.put(ShapeType.CORNER_SMALL, Color.RED);
+        tempColorHashMap.put(ShapeType.CORNER_BIG, Color.RED);
+
+        return tempColorHashMap;
     }
 
     public int getBackgroundColor() {

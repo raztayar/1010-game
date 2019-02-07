@@ -72,4 +72,12 @@ public class UserDAL {
         }
         return false;
     }
+
+    public GameStats[] getStatsHistoryByUserID(long userID) {
+        GameStats[] statsHistory = userDataBase.load("statsHistory:" + String.valueOf(userID), GameStats[].class);
+        if (statsHistory != null) {
+            return statsHistory;
+        }
+        return new GameStats[0];
+    }
 }

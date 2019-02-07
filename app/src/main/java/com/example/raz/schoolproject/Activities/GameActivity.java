@@ -59,16 +59,13 @@ public class GameActivity extends AppCompatActivity {
         queueView = findViewById(R.id.queue);
         boardView = findViewById(R.id.board);
 
-        theme = new Theme();
-
-        findViewById(R.id.mainGameActivityLayout).setBackgroundColor(theme.getBackgroundColor());
-
-        drawBoard();
+        thisContext = this;
 
         game = new Game(this);
-        game.loadFromDataBase(currentUserID);
+        game.bringShapesToQueue();
 
-        thisContext = this;
+        theme = new Theme();
+        drawBoard();
 
         resetGame.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,13 +73,6 @@ public class GameActivity extends AppCompatActivity {
                 resetGame();
             }
         });
-
-        if(!game.hasShapesInQueue()) {
-            game.bringShapesToQueue();
-        }
-        updateQueueView();
-
-        updateScoreView();
 
         for(int i = 0; i < 3; i++){
             final int slotIndex = i;
@@ -123,6 +113,7 @@ public class GameActivity extends AppCompatActivity {
                         Point placePoint = getPlacePointFromCoordinates(event.getY(), event.getX(), (Shape) currentShapeToPlace);
                         if(currentShapeToPlace.isPlaceable(placePoint, game.getBoard())){
                             currentShapeToPlace.placeShape(placePoint, game.getBoard());
+                            game.raiseNumberOfShapesPlacedByOne();
                             game.addScore(currentShapeToPlace.getShapeScore());
                             game.addScore(game.getNumOfFullRowsAndColumns() * 10);
                             game.removeFullRowsAndColumns();
@@ -139,6 +130,7 @@ public class GameActivity extends AppCompatActivity {
                                 MediaPlayer.create(thisContext, Settings.System.DEFAULT_ALARM_ALERT_URI).start();
                                 game.pauseAndUpdateTimer();
                                 game.saveStatsToHistory(currentUserID);
+                                recreate();
                                 Toast.makeText(thisContext, "GAME OVER, " + "it took you: " + Utilities.millisToString(game.getGameStats().getTimerInMillis()) + ", to get: " + game.getGameStats().getScore(), Toast.LENGTH_LONG).show();
                             }
                         }
@@ -160,15 +152,25 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        game.pauseAndUpdateTimer();
+        if (!game.isGameOver()) {
+            game.pauseAndUpdateTimer();
+        }
         game.saveToDataBase(currentUserID);
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         game.loadFromDataBase(currentUserID);
+
+        if(game.isGameOver()) {
+            theme = Theme.GAME_OVER;
+        }
+        findViewById(R.id.mainGameActivityLayout).setBackgroundColor(theme.getBackgroundColor());
+
         game.resumeTimer();
+
         updateBoardView();
         updateQueueView();
         updateScoreView();
@@ -221,9 +223,7 @@ public class GameActivity extends AppCompatActivity {
     private void resetGame() {
         game = new Game(this);
         game.bringShapesToQueue();
-        updateQueueView();
-        updateBoardView();
-        updateScoreView();
+        recreate();
     }
 
     private void drawBoard() {

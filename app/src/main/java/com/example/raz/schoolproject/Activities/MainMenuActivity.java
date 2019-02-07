@@ -16,9 +16,10 @@ public class MainMenuActivity extends AppCompatActivity {
     UserDAL userDAL;
 
     Button gotoGame;
-    Button gotoRegister;
+    Button gotoStats;
     Button gotoLogin;
     Button logout;
+    Button gotoRegister;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,13 +36,13 @@ public class MainMenuActivity extends AppCompatActivity {
             }
         } );
 
-        gotoRegister = findViewById(R.id.gotoRegisterButton);
-        gotoRegister.setOnClickListener(new View.OnClickListener() {
+        gotoStats = findViewById(R.id.gotoStatsButton);
+        gotoStats.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainMenuActivity.this, RegisterActivity.class));
+                startActivity(new Intent(MainMenuActivity.this, StatsActivity.class));
             }
-        });
+        } );
 
         gotoLogin = findViewById(R.id.gotoLoginButton);
         gotoLogin.setOnClickListener(new View.OnClickListener() {
@@ -56,7 +57,15 @@ public class MainMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 userDAL.updateCurrentUser(new User());
-                startActivity(new Intent(MainMenuActivity.this, MainMenuActivity.class));
+                recreate();
+            }
+        });
+
+        gotoRegister = findViewById(R.id.gotoRegisterButton);
+        gotoRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainMenuActivity.this, RegisterActivity.class));
             }
         });
     }
@@ -65,14 +74,15 @@ public class MainMenuActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         ((TextView) findViewById(R.id.hello)).setText("Hello, " + userDAL.getCurrentUser().getUsername());
-        if (userDAL.getCurrentUser().getUserID() != 1) {
+        if (userDAL.getCurrentUser().getUserID() == 1) {
+            gotoLogin.setVisibility(View.VISIBLE);
+            logout.setVisibility(View.GONE);
+            gotoStats.setVisibility(View.GONE);
+        }
+        else {
             gotoLogin.setVisibility(View.GONE);
             gotoRegister.setVisibility(View.GONE);
             logout.setVisibility(View.VISIBLE);
-        }
-        else {
-            gotoLogin.setVisibility(View.VISIBLE);
-            logout.setVisibility(View.GONE);
         }
     }
 }

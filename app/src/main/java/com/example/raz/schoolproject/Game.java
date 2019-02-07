@@ -127,10 +127,8 @@ public class Game {
 
     public boolean isGameOver() {
         for (int i = 0; i < 3; i++) {
-            if (shapeQueue[i] != null){
-                if (shapeQueue[i].isPlaceableSomewhere(board)) {
-                    return false;
-                }
+            if (shapeQueue[i] != null && shapeQueue[i].isPlaceableSomewhere(board)) {
+                return false;
             }
         }
         return true;
@@ -168,6 +166,9 @@ public class Game {
                         shapeQueue[i] = null;
                     }
                 }
+                else {
+                    shapeQueue[i] = null;
+                }
             }
         }
 
@@ -178,16 +179,16 @@ public class Game {
     }
 
     public void saveStatsToHistory(long userID) {
-        GameStats[] statsHistory =  gameDataBase.load("statsHistory:" + String.valueOf(userID), GameStats[].class);
+        GameStats[] statsHistory =  (new UserDAL(gameActivity).getStatsHistoryByUserID(userID));
 
-        Utilities.addToGameStatsArray(statsHistory, gameStats);
+        statsHistory = Utilities.addToGameStatsArray(statsHistory, gameStats);
 
         gameDataBase.save("statsHistory:" + String.valueOf(userID), statsHistory);
     }
 
     public void updateHighScore(long userID) {
-        int currentHighScore = gameDataBase.load("highScoreGameStats:" + String.valueOf(userID), GameStats.class).getScore();
-        if(gameStats.getScore() > currentHighScore) {
+        Integer currentHighScore = gameDataBase.load("highScoreGameStats:" + String.valueOf(userID), GameStats.class).getScore();
+        if(currentHighScore == null || gameStats.getScore() > currentHighScore) {
             gameDataBase.save("highScoreGameStats:" + String.valueOf(userID), gameStats);
         }
     }
@@ -203,5 +204,9 @@ public class Game {
 
     public void resumeTimer() {
         gameStats.startTempTimer();
+    }
+
+    public void raiseNumberOfShapesPlacedByOne() {
+        gameStats.setNumberOfShapesPlaced(gameStats.getNumberOfShapesPlaced()+1);
     }
 }
