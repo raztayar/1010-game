@@ -16,7 +16,7 @@ public class UserDAL {
         long[] userIDs = userDataBase.load("userIDs", long[].class);
         if (userIDs != null) {
             for (long id : userIDs) {
-                User user = userDataBase.load("user:" + String.valueOf(id), User.class);
+                User user = getUserByUserID(id);
                 if(user != null && user.getUsername().equals(username)) {
                     return user;
                 }
@@ -25,7 +25,7 @@ public class UserDAL {
         return null;
     }
 
-    public User getUserByUserID(long id) {
+    private User getUserByUserID(long id) {
         return userDataBase.load("user:" + String.valueOf(id), User.class);
     }
 
@@ -46,6 +46,29 @@ public class UserDAL {
             for (long idInArray : userIDs) {
                 if (id == idInArray) return true;
             }
+        }
+        return false;
+    }
+
+    public void updateCurrentUser(User user) {
+        userDataBase.save("currentUserID", user.getUserID());
+    }
+
+    public User getCurrentUser() {
+        Long currentUserID = userDataBase.load("currentUserID", long.class);
+        if(currentUserID != null) {
+            User user = getUserByUserID(currentUserID);
+            if (user != null) {
+                return user;
+            }
+        }
+        return new User();
+    }
+
+    public boolean isLoginValid(String username, String password) {
+        User user = getUserByUsername(username);
+        if (user != null) {
+            return user.getPassword().equals(password);
         }
         return false;
     }

@@ -13,12 +13,37 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="60sp"
+            android:id="@+id/hello"
+            android:layout_marginVertical="60dp"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Game"
             android:id="@+id/gotoGameButton"
             />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Login"
+            android:id="@+id/gotoLoginButton"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Logout"
+            android:id="@+id/logoutButton"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

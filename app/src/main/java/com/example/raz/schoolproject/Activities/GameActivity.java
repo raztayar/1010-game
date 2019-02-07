@@ -23,6 +23,8 @@ import com.example.raz.schoolproject.IShape;
 import com.example.raz.schoolproject.R;
 import com.example.raz.schoolproject.Shape;
 import com.example.raz.schoolproject.Theme;
+import com.example.raz.schoolproject.User;
+import com.example.raz.schoolproject.UserDAL;
 import com.example.raz.schoolproject.Utilities;
 
 public class GameActivity extends AppCompatActivity {
@@ -40,11 +42,17 @@ public class GameActivity extends AppCompatActivity {
 
     private TableLayout boardView;
 
+    private UserDAL userDAL;
+    private long currentUserID;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        userDAL = new UserDAL(this);
+        currentUserID = userDAL.getCurrentUser().getUserID();
 
         Button resetGame = findViewById(R.id.resetGameButton);
         scoreView = findViewById(R.id.score);
@@ -58,7 +66,7 @@ public class GameActivity extends AppCompatActivity {
         drawBoard();
 
         game = new Game(this);
-        game.loadFromDataBase("1");
+        game.loadFromDataBase(currentUserID);
 
         thisContext = this;
 
@@ -130,6 +138,7 @@ public class GameActivity extends AppCompatActivity {
                             if (game.isGameOver()) {
                                 MediaPlayer.create(thisContext, Settings.System.DEFAULT_ALARM_ALERT_URI).start();
                                 game.pauseAndUpdateTimer();
+                                game.saveStatsToHistory(currentUserID);
                                 Toast.makeText(thisContext, "GAME OVER, " + "it took you: " + Utilities.millisToString(game.getGameStats().getTimerInMillis()) + ", to get: " + game.getGameStats().getScore(), Toast.LENGTH_LONG).show();
                             }
                         }
@@ -152,13 +161,13 @@ public class GameActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         game.pauseAndUpdateTimer();
-        game.saveToDataBase("");
+        game.saveToDataBase(currentUserID);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        game.loadFromDataBase("");
+        game.loadFromDataBase(currentUserID);
         game.resumeTimer();
         updateBoardView();
         updateQueueView();

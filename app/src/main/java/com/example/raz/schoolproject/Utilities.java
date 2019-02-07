@@ -108,4 +108,20 @@ public class Utilities {
         }
         return array;
     }
+
+    public static GameStats[] addToGameStatsArray(GameStats[] array, GameStats value) {
+        if (array[array.length - 1] != null) {
+            array = Arrays.copyOf(array, array.length * 2);
+            array[array.length / 2] = value;
+        }
+        else {
+            for(int i = 0; i < array.length; i++) {
+                if (array[i] == null) {
+                    array[i] = value;
+                    return array;
+                }
+            }
+        }
+        return array;
+    }
 }

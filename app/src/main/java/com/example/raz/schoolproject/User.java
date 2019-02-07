@@ -1,10 +1,11 @@
 package com.example.raz.schoolproject;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class User {
 
-    public static User currentUser;
+    public static User currentUserID;
 
     private long userID;
     private String username;
@@ -14,8 +15,8 @@ public class User {
 
 
     public User() {
-        userID = 0;
-        username = "";
+        userID = 1;
+        username = "Guest";
         password = "";
         email = "";
         phoneNumber = "";
@@ -35,5 +36,18 @@ public class User {
 
     public String getUsername() {
         return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public static long generateNewUserID(UserDAL userDAL) {
+        Random rnd = new Random();
+        long userID = rnd.nextInt(9998) + 2;
+        while (userDAL.idExists(userID)) {
+            userID = rnd.nextInt(9998) + 2;
+        }
+        return userID;
     }
 }

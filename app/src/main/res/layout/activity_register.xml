@@ -28,7 +28,7 @@
             android:layout_marginTop="50dp"
             android:layout_marginHorizontal="50dp"
             android:hint="Username"
-            android:id="@+id/username"
+            android:id="@+id/username_register"
             android:inputType="text"/>
         <EditText
             android:layout_width="match_parent"
@@ -36,7 +36,7 @@
             android:layout_marginTop="50dp"
             android:layout_marginHorizontal="50dp"
             android:hint="Password"
-            android:id="@+id/password"
+            android:id="@+id/password_register"
             android:inputType="textPassword"/>
         <EditText
             android:layout_width="match_parent"
@@ -44,7 +44,7 @@
             android:layout_marginTop="50dp"
             android:layout_marginHorizontal="50dp"
             android:hint="Email"
-            android:id="@+id/email"
+            android:id="@+id/email_register"
             android:inputType="text"/>
         <EditText
             android:layout_width="match_parent"
@@ -52,13 +52,13 @@
             android:layout_marginTop="50dp"
             android:layout_marginHorizontal="50dp"
             android:hint="Phone Number"
-            android:id="@+id/phoneNumber"
+            android:id="@+id/phoneNumber_register"
             android:inputType="phone"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Submit"
-            android:id="@+id/submitButton"
+            android:id="@+id/submitRegisterButton"
             android:layout_marginTop="50dp"
             android:layout_gravity="center"/>
     </LinearLayout>

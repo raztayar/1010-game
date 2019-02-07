@@ -2,6 +2,8 @@ package com.example.raz.schoolproject;
 
 import com.example.raz.schoolproject.Activities.GameActivity;
 
+import java.util.Arrays;
+
 public class Game {
 
     public final static int BOARD_HEIGHT = 10, BOARD_WIDTH = 10;
@@ -134,34 +136,34 @@ public class Game {
         return true;
     }
 
-    public void saveToDataBase(String userID) {
+    public void saveToDataBase(long userID) {
 
-        gameDataBase.save("board:" + userID, board);
+        gameDataBase.save("board:" + String.valueOf(userID), board);
 
         String[] shapeTypes = new String[3];
         for(int i = 0; i < shapeQueue.length; i++) {
-            gameDataBase.save("queueSlot" + i + ":" + userID, shapeQueue[i]);
+            gameDataBase.save("queueSlot" + i + ":" + String.valueOf(userID), shapeQueue[i]);
             if (shapeQueue[i] != null) {
                 shapeTypes[i] = shapeQueue[i].getClass().getName();
             }
         }
-        gameDataBase.save("shapeTypes:" + userID, shapeTypes);
+        gameDataBase.save("shapeTypes:" + String.valueOf(userID), shapeTypes);
 
-        gameDataBase.save("gameStats:" + userID, gameStats);
+        gameDataBase.save("currentGameStats:" + String.valueOf(userID), gameStats);
     }
 
-    public void loadFromDataBase(String userID) {
-        ShapeType[][] boardLoad = gameDataBase.load("board:" + userID, ShapeType[][].class);
+    public void loadFromDataBase(long userID) {
+        ShapeType[][] boardLoad = gameDataBase.load("board:" + String.valueOf(userID), ShapeType[][].class);
         if (boardLoad != null) {
             board = boardLoad;
         }
 
-        String[] shapeTypes = gameDataBase.load("shapeTypes:" + userID, String[].class);
+        String[] shapeTypes = gameDataBase.load("shapeTypes:" + String.valueOf(userID), String[].class);
         if(shapeTypes != null) {
             for (int i = 0; i < shapeTypes.length; i++) {
                 if (shapeTypes[i] != null) {
                     try {
-                        shapeQueue[i] = (IShape) gameDataBase.load("queueSlot" + i + ":" + userID, Class.forName(shapeTypes[i]));
+                        shapeQueue[i] = (IShape) gameDataBase.load("queueSlot" + i + ":" + String.valueOf(userID), Class.forName(shapeTypes[i]));
                     } catch (ClassNotFoundException e) {
                         shapeQueue[i] = null;
                     }
@@ -169,16 +171,24 @@ public class Game {
             }
         }
 
-        GameStats gameStatsLoad = gameDataBase.load("gameStats:" + userID, GameStats.class);
+        GameStats gameStatsLoad = gameDataBase.load("currentGameStats:" + String.valueOf(userID), GameStats.class);
         if (gameStatsLoad != null) {
             gameStats = gameStatsLoad;
         }
     }
 
-    public void updateHighScore(String userID) {
-        int currentHighScore = gameDataBase.load("highScoreGameStats:" + userID, GameStats.class).getScore();
+    public void saveStatsToHistory(long userID) {
+        GameStats[] statsHistory =  gameDataBase.load("statsHistory:" + String.valueOf(userID), GameStats[].class);
+
+        Utilities.addToGameStatsArray(statsHistory, gameStats);
+
+        gameDataBase.save("statsHistory:" + String.valueOf(userID), statsHistory);
+    }
+
+    public void updateHighScore(long userID) {
+        int currentHighScore = gameDataBase.load("highScoreGameStats:" + String.valueOf(userID), GameStats.class).getScore();
         if(gameStats.getScore() > currentHighScore) {
-            gameDataBase.save("highScoreGameStats:" + userID, gameStats);
+            gameDataBase.save("highScoreGameStats:" + String.valueOf(userID), gameStats);
         }
     }
 
