@@ -3,14 +3,17 @@ package com.example.raz.schoolproject.Activities;
 import android.content.Context;
 import android.graphics.Point;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.transition.Explode;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
@@ -130,7 +133,10 @@ public class GameActivity extends AppCompatActivity {
                                 MediaPlayer.create(thisContext, Settings.System.DEFAULT_ALARM_ALERT_URI).start();
                                 game.pauseAndUpdateTimer();
                                 game.saveStatsToHistory(currentUserID);
-                                recreate();
+                                finish();
+                                overridePendingTransition( 0, 0);
+                                startActivity(getIntent());
+                                overridePendingTransition( 0, 0);
                                 Toast.makeText(thisContext, "GAME OVER, " + "it took you: " + Utilities.millisToString(game.getGameStats().getTimerInMillis()) + ", to get: " + game.getGameStats().getScore(), Toast.LENGTH_LONG).show();
                             }
                         }
@@ -223,7 +229,10 @@ public class GameActivity extends AppCompatActivity {
     private void resetGame() {
         game = new Game(this);
         game.bringShapesToQueue();
-        recreate();
+        finish();
+        overridePendingTransition( 0, 0);
+        startActivity(getIntent());
+        overridePendingTransition( 0, 0);
     }
 
     private void drawBoard() {

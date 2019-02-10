@@ -57,7 +57,10 @@ public class MainMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 userDAL.updateCurrentUser(new User());
-                recreate();
+                finish();
+                overridePendingTransition( 0, 0);
+                startActivity(getIntent());
+                overridePendingTransition( 0, 0);
             }
         });
 
