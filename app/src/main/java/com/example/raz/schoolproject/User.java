@@ -47,15 +47,6 @@ public class User {
         return password;
     }
 
-    public static long generateNewUserID(UserDAL userDAL) {
-        Random rnd = new Random();
-        long userID = rnd.nextInt(9998) + 2;
-        while (userDAL.idExists(userID)) {
-            userID = rnd.nextInt(9998) + 2;
-        }
-        return userID;
-    }
-
     public int getCoins() {
         return coins;
     }

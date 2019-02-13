@@ -9,12 +9,11 @@ import android.widget.TextView;
 
 import com.example.raz.schoolproject.R;
 import com.example.raz.schoolproject.User;
-import com.example.raz.schoolproject.UserDAL;
-import com.example.raz.schoolproject.UserDAL2;
+import com.example.raz.schoolproject.DAL.UserDAL;
 
 public class MainMenuActivity extends AppCompatActivity {
 
-    UserDAL2 userDAL;
+    UserDAL userDAL;
 
     Button gotoGame;
     Button gotoStats;
@@ -27,7 +26,7 @@ public class MainMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
-        userDAL = new UserDAL2(this);
+        userDAL = new UserDAL(this);
 
 
         gotoGame = findViewById(R.id.gotoGameButton);

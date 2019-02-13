@@ -7,7 +7,7 @@ import android.widget.ListView;
 
 import com.example.raz.schoolproject.GameStats;
 import com.example.raz.schoolproject.R;
-import com.example.raz.schoolproject.UserDAL;
+import com.example.raz.schoolproject.DAL.UserDAL;
 
 public class StatsActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.example.raz.schoolproject;
+package com.example.raz.schoolproject.DAL;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,7 +6,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class UserDAL2 extends SQLiteOpenHelper {
+import com.example.raz.schoolproject.LocalDataBase;
+import com.example.raz.schoolproject.User;
+
+public class UserDAL extends SQLiteOpenHelper {
 
     private LocalDataBase currentUserDataBase;
 
@@ -27,7 +30,7 @@ public class UserDAL2 extends SQLiteOpenHelper {
     private SQLiteDatabase database;
     private String[] allColumns = {ID, USERNAME, PASSWORD, EMAIL, PHONE_NUMBER, COINS};
 
-    public UserDAL2(Context context) {
+    public UserDAL(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         database = this.getWritableDatabase();
         currentUserDataBase = new LocalDataBase(context);

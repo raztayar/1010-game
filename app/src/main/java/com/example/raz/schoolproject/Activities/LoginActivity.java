@@ -10,16 +10,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.raz.schoolproject.R;
-import com.example.raz.schoolproject.User;
-import com.example.raz.schoolproject.UserDAL;
-import com.example.raz.schoolproject.UserDAL2;
-
-import java.util.Random;
+import com.example.raz.schoolproject.DAL.UserDAL;
 
 public class LoginActivity extends AppCompatActivity {
 
     Button submit;
-    UserDAL2 userDAL;
+    UserDAL userDAL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +24,7 @@ public class LoginActivity extends AppCompatActivity {
 
         final Context thisContext = this;
 
-        userDAL = new UserDAL2(this);
+        userDAL = new UserDAL(this);
 
         submit = findViewById(R.id.submitLoginButton);
 

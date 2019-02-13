@@ -18,13 +18,14 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.raz.schoolproject.DAL.GameDAL;
 import com.example.raz.schoolproject.Game;
 import com.example.raz.schoolproject.IShape;
 import com.example.raz.schoolproject.R;
 import com.example.raz.schoolproject.Shape;
 import com.example.raz.schoolproject.Theme;
 import com.example.raz.schoolproject.User;
-import com.example.raz.schoolproject.UserDAL2;
+import com.example.raz.schoolproject.DAL.UserDAL;
 import com.example.raz.schoolproject.Utilities;
 
 public class GameActivity extends AppCompatActivity {
@@ -42,7 +43,8 @@ public class GameActivity extends AppCompatActivity {
 
     private TableLayout boardView;
 
-    private UserDAL2 userDAL;
+    private UserDAL userDAL;
+    private GameDAL gameDAL;
     private long currentUserID;
 
 
@@ -51,7 +53,8 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        userDAL = new UserDAL2(this);
+        userDAL = new UserDAL(this);
+        gameDAL = new GameDAL(this);
 
         Button resetGame = findViewById(R.id.resetGameButton);
         scoreView = findViewById(R.id.score);
@@ -168,14 +171,14 @@ public class GameActivity extends AppCompatActivity {
         if (!game.isGameOver()) {
             game.pauseAndUpdateTimer();
         }
-        game.saveToDataBase(currentUserID);
+        gameDAL.saveToDataBase(currentUserID, game);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         currentUserID = userDAL.getCurrentUser().getUserID();
-        game.loadFromDataBase(currentUserID);
+        game = gameDAL.loadFromDataBase(currentUserID, game);
 
         if(game.isGameOver()) {
             theme = Theme.GAME_OVER;
