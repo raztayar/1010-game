@@ -12,13 +12,14 @@ import android.widget.Toast;
 import com.example.raz.schoolproject.R;
 import com.example.raz.schoolproject.User;
 import com.example.raz.schoolproject.UserDAL;
+import com.example.raz.schoolproject.UserDAL2;
 
 import java.util.Random;
 
 public class RegisterActivity extends AppCompatActivity {
 
     Button submit;
-    UserDAL userDAL;
+    UserDAL2 userDAL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +28,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         final Context thisContext = this;
 
-        userDAL = new UserDAL(this);
+        userDAL = new UserDAL2(this);
 
         submit = findViewById(R.id.submitRegisterButton);
 
@@ -40,8 +41,8 @@ public class RegisterActivity extends AppCompatActivity {
                 String phoneNumber = ((EditText) findViewById(R.id.phoneNumber_register)).getText().toString();
 
                 if (userDAL.getUserByUsername(username) == null) {
-                    userDAL.saveUser(new User(User.generateNewUserID(userDAL), username, password, email, phoneNumber));
-                    userDAL.updateCurrentUser(userDAL.getUserByUsername(username));
+                    User user = userDAL.createUser(new User(0, username, password, email, phoneNumber, 0));
+                    userDAL.setCurrentUser(user);
                     Toast.makeText(thisContext, "Register successful", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(RegisterActivity.this, MainMenuActivity.class));
                 }

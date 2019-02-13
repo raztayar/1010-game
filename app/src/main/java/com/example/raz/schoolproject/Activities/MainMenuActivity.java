@@ -10,10 +10,11 @@ import android.widget.TextView;
 import com.example.raz.schoolproject.R;
 import com.example.raz.schoolproject.User;
 import com.example.raz.schoolproject.UserDAL;
+import com.example.raz.schoolproject.UserDAL2;
 
 public class MainMenuActivity extends AppCompatActivity {
 
-    UserDAL userDAL;
+    UserDAL2 userDAL;
 
     Button gotoGame;
     Button gotoStats;
@@ -26,7 +27,8 @@ public class MainMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
-        userDAL = new UserDAL(this);
+        userDAL = new UserDAL2(this);
+
 
         gotoGame = findViewById(R.id.gotoGameButton);
         gotoGame.setOnClickListener(new View.OnClickListener(){
@@ -56,7 +58,7 @@ public class MainMenuActivity extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                userDAL.updateCurrentUser(new User());
+                userDAL.setCurrentUser(new User());
                 finish();
                 overridePendingTransition( 0, 0);
                 startActivity(getIntent());
@@ -77,10 +79,12 @@ public class MainMenuActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         ((TextView) findViewById(R.id.hello)).setText("Hello, " + userDAL.getCurrentUser().getUsername());
-        if (userDAL.getCurrentUser().getUserID() == 1) {
+        ((TextView) findViewById(R.id.coins)).setText("Coins: " + userDAL.getCurrentUser().getCoins());
+        if (userDAL.getCurrentUser().getUserID() == -1) {
             gotoLogin.setVisibility(View.VISIBLE);
             logout.setVisibility(View.GONE);
             gotoStats.setVisibility(View.GONE);
+            ((TextView) findViewById(R.id.coins)).setText("Coins: log in to collect coins");
         }
         else {
             gotoLogin.setVisibility(View.GONE);

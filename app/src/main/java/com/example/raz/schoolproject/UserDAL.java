@@ -40,6 +40,12 @@ public class UserDAL {
         userDataBase.save("userIDs", userIDs);
     }
 
+    public void updateUser(User user) {
+        if (user.getUserID() != 1) {
+            userDataBase.save("user:" + String.valueOf(user.getUserID()), user);
+        }
+    }
+
     public boolean idExists(long id) {
         long[] userIDs = userDataBase.load("userIDs", long[].class);
         if (userIDs != null) {
@@ -48,10 +54,6 @@ public class UserDAL {
             }
         }
         return false;
-    }
-
-    public void updateCurrentUser(User user) {
-        userDataBase.save("currentUserID", user.getUserID());
     }
 
     public User getCurrentUser() {
@@ -63,6 +65,10 @@ public class UserDAL {
             }
         }
         return new User();
+    }
+
+    public void updateCurrentUser(User user) {
+        userDataBase.save("currentUserID", user.getUserID());
     }
 
     public boolean isLoginValid(String username, String password) {

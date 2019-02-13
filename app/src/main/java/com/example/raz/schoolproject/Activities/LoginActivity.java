@@ -12,13 +12,14 @@ import android.widget.Toast;
 import com.example.raz.schoolproject.R;
 import com.example.raz.schoolproject.User;
 import com.example.raz.schoolproject.UserDAL;
+import com.example.raz.schoolproject.UserDAL2;
 
 import java.util.Random;
 
 public class LoginActivity extends AppCompatActivity {
 
     Button submit;
-    UserDAL userDAL;
+    UserDAL2 userDAL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +28,7 @@ public class LoginActivity extends AppCompatActivity {
 
         final Context thisContext = this;
 
-        userDAL = new UserDAL(this);
+        userDAL = new UserDAL2(this);
 
         submit = findViewById(R.id.submitLoginButton);
 
@@ -38,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
                 String password = ((EditText) findViewById(R.id.password_login)).getText().toString();
 
                 if (userDAL.isLoginValid(username, password)) {
-                    userDAL.updateCurrentUser(userDAL.getUserByUsername(username));
+                    userDAL.setCurrentUser(userDAL.getUserByUsername(username));
                     Toast.makeText(thisContext, "Login successful", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(LoginActivity.this, MainMenuActivity.class));
                 }

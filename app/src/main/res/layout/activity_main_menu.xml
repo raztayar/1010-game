@@ -13,13 +13,24 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/coins"
+                android:text="Coins: 0"
+                android:textSize="20sp"
+                android:layout_margin="10dp"/>
+        </LinearLayout>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""
+            android:text="Hello, Guest"
             android:textSize="60sp"
             android:id="@+id/hello"
-            android:layout_marginVertical="60dp"
+            android:layout_marginVertical="50dp"
             />
     </LinearLayout>
 

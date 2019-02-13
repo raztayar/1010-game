@@ -3,17 +3,14 @@ package com.example.raz.schoolproject.Activities;
 import android.content.Context;
 import android.graphics.Point;
 import android.media.MediaPlayer;
-import android.os.Build;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.transition.Explode;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
@@ -27,7 +24,7 @@ import com.example.raz.schoolproject.R;
 import com.example.raz.schoolproject.Shape;
 import com.example.raz.schoolproject.Theme;
 import com.example.raz.schoolproject.User;
-import com.example.raz.schoolproject.UserDAL;
+import com.example.raz.schoolproject.UserDAL2;
 import com.example.raz.schoolproject.Utilities;
 
 public class GameActivity extends AppCompatActivity {
@@ -45,7 +42,7 @@ public class GameActivity extends AppCompatActivity {
 
     private TableLayout boardView;
 
-    private UserDAL userDAL;
+    private UserDAL2 userDAL;
     private long currentUserID;
 
 
@@ -54,8 +51,7 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        userDAL = new UserDAL(this);
-        currentUserID = userDAL.getCurrentUser().getUserID();
+        userDAL = new UserDAL2(this);
 
         Button resetGame = findViewById(R.id.resetGameButton);
         scoreView = findViewById(R.id.score);
@@ -114,12 +110,19 @@ public class GameActivity extends AppCompatActivity {
                         getQueueSlotLayout(currentSlotIndex).setVisibility(View.VISIBLE);
                         IShape currentShapeToPlace = game.getShapeQueue()[currentSlotIndex];
                         Point placePoint = getPlacePointFromCoordinates(event.getY(), event.getX(), (Shape) currentShapeToPlace);
+
                         if(currentShapeToPlace.isPlaceable(placePoint, game.getBoard())){
                             currentShapeToPlace.placeShape(placePoint, game.getBoard());
                             game.raiseNumberOfShapesPlacedByOne();
-                            game.addScore(currentShapeToPlace.getShapeScore());
-                            game.addScore(game.getNumOfFullRowsAndColumns() * 10);
+
+                            game.addScore(currentShapeToPlace.getShapeScore() + (game.getNumOfFullRowsAndColumns() * 10));
+
+                            User newUser = userDAL.getUserByID(currentUserID);
+                            newUser.addCoins(game.getNumOfFullRowsAndColumns());
+                            userDAL.updateUser(newUser);
+
                             game.removeFullRowsAndColumns();
+
                             updateBoardView();
                             updateScoreView();
 
@@ -131,12 +134,16 @@ public class GameActivity extends AppCompatActivity {
 
                             if (game.isGameOver()) {
                                 MediaPlayer.create(thisContext, Settings.System.DEFAULT_ALARM_ALERT_URI).start();
+
                                 game.pauseAndUpdateTimer();
+
                                 game.saveStatsToHistory(currentUserID);
+
                                 finish();
                                 overridePendingTransition( 0, 0);
                                 startActivity(getIntent());
                                 overridePendingTransition( 0, 0);
+
                                 Toast.makeText(thisContext, "GAME OVER, " + "it took you: " + Utilities.millisToString(game.getGameStats().getTimerInMillis()) + ", to get: " + game.getGameStats().getScore(), Toast.LENGTH_LONG).show();
                             }
                         }
@@ -162,12 +169,12 @@ public class GameActivity extends AppCompatActivity {
             game.pauseAndUpdateTimer();
         }
         game.saveToDataBase(currentUserID);
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        currentUserID = userDAL.getCurrentUser().getUserID();
         game.loadFromDataBase(currentUserID);
 
         if(game.isGameOver()) {
