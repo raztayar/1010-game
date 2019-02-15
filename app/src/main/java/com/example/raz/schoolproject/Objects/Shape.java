@@ -1,20 +1,15 @@
-package com.example.raz.schoolproject;
+package com.example.raz.schoolproject.Objects;
 
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Point;
-import android.util.Log;
-import android.util.TypedValue;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.example.raz.schoolproject.Activities.GameActivity;
-
-import java.util.HashMap;
+import com.example.raz.schoolproject.ShapeType;
+import com.example.raz.schoolproject.Utilities;
 
 public abstract class Shape implements IShape {
 

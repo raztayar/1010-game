@@ -19,12 +19,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.raz.schoolproject.DAL.GameDAL;
-import com.example.raz.schoolproject.Game;
-import com.example.raz.schoolproject.IShape;
+import com.example.raz.schoolproject.Objects.Game;
+import com.example.raz.schoolproject.Objects.IShape;
 import com.example.raz.schoolproject.R;
-import com.example.raz.schoolproject.Shape;
-import com.example.raz.schoolproject.Theme;
-import com.example.raz.schoolproject.User;
+import com.example.raz.schoolproject.Objects.Shape;
+import com.example.raz.schoolproject.Objects.Theme;
+import com.example.raz.schoolproject.Objects.User;
 import com.example.raz.schoolproject.DAL.UserDAL;
 import com.example.raz.schoolproject.Utilities;
 
@@ -116,7 +116,7 @@ public class GameActivity extends AppCompatActivity {
 
                         if(currentShapeToPlace.isPlaceable(placePoint, game.getBoard())){
                             currentShapeToPlace.placeShape(placePoint, game.getBoard());
-                            game.raiseNumberOfShapesPlacedByOne();
+                            game.raiseShapesPlacedCountByOne();
 
                             game.addScore(currentShapeToPlace.getShapeScore() + (game.getNumOfFullRowsAndColumns() * 10));
 
@@ -147,7 +147,7 @@ public class GameActivity extends AppCompatActivity {
                                 startActivity(getIntent());
                                 overridePendingTransition( 0, 0);
 
-                                Toast.makeText(thisContext, "GAME OVER, " + "it took you: " + Utilities.millisToString(game.getGameStats().getTimerInMillis()) + ", to get: " + game.getGameStats().getScore(), Toast.LENGTH_LONG).show();
+                                Toast.makeText(thisContext, "GAME OVER, " + "it took you: " + Utilities.millisToString(game.getGameStats().getTimeCountInMillis()) + ", to get: " + game.getGameStats().getScore(), Toast.LENGTH_LONG).show();
                             }
                         }
                         else {

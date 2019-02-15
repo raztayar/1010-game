@@ -1,8 +1,10 @@
-package com.example.raz.schoolproject;
+package com.example.raz.schoolproject.Objects;
 
 import com.example.raz.schoolproject.Activities.GameActivity;
-
-import java.util.Arrays;
+import com.example.raz.schoolproject.DAL.StatsDAL;
+import com.example.raz.schoolproject.LocalDataBase;
+import com.example.raz.schoolproject.ShapeType;
+import com.example.raz.schoolproject.Utilities;
 
 public class Game {
 
@@ -149,7 +151,7 @@ public class Game {
     }
 
     public void saveStatsToHistory(long userID) {
-
+        new StatsDAL(gameActivity).createStats(gameStats, userID);
     }
 
     public void updateHighScore(long userID) {
@@ -172,7 +174,7 @@ public class Game {
         gameStats.startTempTimer();
     }
 
-    public void raiseNumberOfShapesPlacedByOne() {
-        gameStats.setNumberOfShapesPlaced(gameStats.getNumberOfShapesPlaced()+1);
+    public void raiseShapesPlacedCountByOne() {
+        gameStats.setShapesPlacedCount(gameStats.getShapesPlacedCount()+1);
     }
 }

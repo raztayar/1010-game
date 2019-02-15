@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.raz.schoolproject.LocalDataBase;
-import com.example.raz.schoolproject.User;
+import com.example.raz.schoolproject.Objects.User;
 
 public class UserDAL extends SQLiteOpenHelper {
 

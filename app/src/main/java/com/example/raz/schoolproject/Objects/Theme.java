@@ -1,6 +1,8 @@
-package com.example.raz.schoolproject;
+package com.example.raz.schoolproject.Objects;
 
 import android.graphics.Color;
+
+import com.example.raz.schoolproject.ShapeType;
 
 import java.util.HashMap;
 

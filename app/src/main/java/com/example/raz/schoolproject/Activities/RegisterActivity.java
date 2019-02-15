@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.raz.schoolproject.R;
-import com.example.raz.schoolproject.User;
+import com.example.raz.schoolproject.Objects.User;
 import com.example.raz.schoolproject.DAL.UserDAL;
 
 public class RegisterActivity extends AppCompatActivity {

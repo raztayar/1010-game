@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.raz.schoolproject.R;
-import com.example.raz.schoolproject.User;
+import com.example.raz.schoolproject.Objects.User;
 import com.example.raz.schoolproject.DAL.UserDAL;
 
 public class MainMenuActivity extends AppCompatActivity {

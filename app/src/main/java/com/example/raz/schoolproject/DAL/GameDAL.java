@@ -2,9 +2,9 @@ package com.example.raz.schoolproject.DAL;
 
 import android.content.Context;
 
-import com.example.raz.schoolproject.Game;
-import com.example.raz.schoolproject.GameStats;
-import com.example.raz.schoolproject.IShape;
+import com.example.raz.schoolproject.Objects.Game;
+import com.example.raz.schoolproject.Objects.GameStats;
+import com.example.raz.schoolproject.Objects.IShape;
 import com.example.raz.schoolproject.LocalDataBase;
 import com.example.raz.schoolproject.ShapeType;
 

@@ -1,4 +1,4 @@
-package com.example.raz.schoolproject;
+package com.example.raz.schoolproject.Objects;
 
 import java.util.ArrayList;
 import java.util.Random;

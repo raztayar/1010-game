@@ -1,9 +1,11 @@
-package com.example.raz.schoolproject;
+package com.example.raz.schoolproject.Objects;
 
 import android.content.Context;
 import android.graphics.Point;
-import android.widget.LinearLayout;
 import android.widget.TableLayout;
+
+import com.example.raz.schoolproject.Objects.Theme;
+import com.example.raz.schoolproject.ShapeType;
 
 public interface IShape {
 

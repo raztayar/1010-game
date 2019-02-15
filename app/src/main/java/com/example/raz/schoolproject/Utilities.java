@@ -2,6 +2,8 @@ package com.example.raz.schoolproject;
 
 import android.content.Context;
 
+import com.example.raz.schoolproject.Objects.GameStats;
+import com.example.raz.schoolproject.Objects.IShape;
 import com.example.raz.schoolproject.Shapes.Corner_Big_BottomLeft;
 import com.example.raz.schoolproject.Shapes.Corner_Big_BottomRight;
 import com.example.raz.schoolproject.Shapes.Corner_Big_TopLeft;

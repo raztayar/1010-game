@@ -1,6 +1,6 @@
 package com.example.raz.schoolproject.Shapes;
 
-import com.example.raz.schoolproject.Shape;
+import com.example.raz.schoolproject.Objects.Shape;
 import com.example.raz.schoolproject.ShapeType;
 
 public class Square_Medium extends Shape {
