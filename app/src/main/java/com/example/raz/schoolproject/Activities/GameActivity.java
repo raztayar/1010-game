@@ -118,13 +118,13 @@ public class GameActivity extends AppCompatActivity {
                             currentShapeToPlace.placeShape(placePoint, game.getBoard());
                             game.raiseShapesPlacedCountByOne();
 
-                            game.addScore(currentShapeToPlace.getShapeScore() + (game.getNumOfFullRowsAndColumns() * 10));
+                            int fullLines = game.removeFullRowsAndColumns();
+
+                            game.addScore(currentShapeToPlace.getShapeScore() + (fullLines * 10));
 
                             User newUser = userDAL.getUserByID(currentUserID);
-                            newUser.addCoins(game.getNumOfFullRowsAndColumns());
+                            newUser.addCoins(fullLines);
                             userDAL.updateUser(newUser);
-
-                            game.removeFullRowsAndColumns();
 
                             updateBoardView();
                             updateScoreView();

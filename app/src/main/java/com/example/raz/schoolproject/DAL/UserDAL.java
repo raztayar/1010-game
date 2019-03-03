@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.raz.schoolproject.LocalDataBase;
 import com.example.raz.schoolproject.Objects.User;
+import com.example.raz.schoolproject.Utilities;
 
 public class UserDAL extends SQLiteOpenHelper {
 
@@ -115,7 +116,7 @@ public class UserDAL extends SQLiteOpenHelper {
     public boolean isLoginValid(String username, String password) {
         User user = getUserByUsername(username);
         if (user != null) {
-            return user.getPassword().equals(password);
+            return user.getPassword().equals(Utilities.md5(password));
         }
         return false;
     }

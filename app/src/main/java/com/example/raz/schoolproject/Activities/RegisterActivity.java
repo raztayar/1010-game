@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.example.raz.schoolproject.R;
 import com.example.raz.schoolproject.Objects.User;
 import com.example.raz.schoolproject.DAL.UserDAL;
+import com.example.raz.schoolproject.Utilities;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -38,7 +39,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String phoneNumber = ((EditText) findViewById(R.id.phoneNumber_register)).getText().toString();
 
                 if (userDAL.getUserByUsername(username) == null) {
-                    User user = userDAL.createUser(new User(0, username, password, email, phoneNumber, 0));
+                    User user = userDAL.createUser(new User(0, username, Utilities.md5(password), email, phoneNumber, 0));
                     userDAL.setCurrentUser(user);
                     Toast.makeText(thisContext, "Register successful", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(RegisterActivity.this, MainMenuActivity.class));

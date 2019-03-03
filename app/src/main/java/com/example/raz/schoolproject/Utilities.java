@@ -1,6 +1,11 @@
 package com.example.raz.schoolproject;
 
 import android.content.Context;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TableRow;
+import android.widget.TextView;
 
 import com.example.raz.schoolproject.Objects.GameStats;
 import com.example.raz.schoolproject.Objects.IShape;
@@ -24,6 +29,9 @@ import com.example.raz.schoolproject.Shapes.Square_Big;
 import com.example.raz.schoolproject.Shapes.Square_Medium;
 import com.example.raz.schoolproject.Shapes.Square_Small;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Random;
@@ -42,78 +50,21 @@ public class Utilities {
         return String.format(Locale.getDefault(), "%dh:%02dm:%02ds", h,m,s);
     }
 
-    public static IShape createRandomShape() {
-        Random rnd = new Random();
+    public static String md5(String input) {
+        String md5 = null;
 
-        switch (rnd.nextInt(ShapeType.values().length)) {
-            case 0: return new Square_Small();
-            case 1: return new Square_Medium();
-            case 2: return new Square_Big();
-            case 3: {
-                switch (rnd.nextInt(2)) {
-                    case 0: return new LineOfTwo_Horizontal();
-                    case 1: return new LineOfTwo_Vertical();
-                }
-            }
-            case 4: {
-                switch (rnd.nextInt(2)) {
-                    case 0: return new LineOfThree_Horizontal();
-                    case 1: return new LineOfThree_Vertical();
-                }
-            }
-            case 5: {
-                switch (rnd.nextInt(2)) {
-                    case 0: return new LineOfFour_Horizontal();
-                    case 1: return new LineOfFour_Vertical();
-                }
-            }
-            case 6: {
-                switch (rnd.nextInt(2)) {
-                    case 0: return new LineOfFive_Horizontal();
-                    case 1: return new LineOfFive_Vertical();
-                }
-            }
-            case 7: {
-                switch (rnd.nextInt(4)) {
-                    case 0: return new Corner_Small_TopLeft();
-                    case 1: return new Corner_Small_TopRight();
-                    case 2: return new Corner_Small_BottomLeft();
-                    case 3: return new Corner_Small_BottomRight();
-                }
-            }
-            case 8: {
-                switch (rnd.nextInt(4)) {
-                    case 0: return new Corner_Big_TopLeft();
-                    case 1: return new Corner_Big_TopRight();
-                    case 2: return new Corner_Big_BottomLeft();
-                    case 3: return new Corner_Big_BottomRight();
-                }
-            }
+        if(input == null) return null;
+
+        try {
+            MessageDigest digest = MessageDigest.getInstance("MD5");
+
+            digest.update(input.getBytes(), 0, input.length());
+
+            md5 = new BigInteger(1, digest.digest()).toString(16);
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
         }
-
-        throw new RuntimeException("Randomizer failed");
-
-    }
-
-    public static long[] addToLongArray(long[] array, long value) {
-        if (array[array.length - 1] != 0) {
-            array = Arrays.copyOf(array, array.length * 2);
-            array[array.length / 2] = value;
-        }
-        else {
-            for(int i = 0; i < array.length; i++) {
-                if (array[i] == 0) {
-                    array[i] = value;
-                    return array;
-                }
-            }
-        }
-        return array;
-    }
-
-    public static GameStats[] addToGameStatsArray(GameStats[] array, GameStats value) {
-        array = Arrays.copyOf(array, array.length+1);
-        array[array.length-1] = value;
-        return array;
+        return md5;
     }
 }
