@@ -24,7 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class StatsActivity extends AppCompatActivity {
+public class StatsActivity extends BaseAppCompatActivity {
 
     StatsDAL statsDAL;
     UserDAL userDAL;

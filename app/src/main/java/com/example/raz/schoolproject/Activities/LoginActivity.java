@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.example.raz.schoolproject.R;
 import com.example.raz.schoolproject.DAL.UserDAL;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseAppCompatActivity {
 
     Button submit;
     UserDAL userDAL;

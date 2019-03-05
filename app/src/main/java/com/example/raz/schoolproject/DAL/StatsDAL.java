@@ -14,8 +14,6 @@ import java.util.Date;
 
 public class StatsDAL extends SQLiteOpenHelper {
 
-    private LocalDataBase currentUserDataBase;
-
     private static final String DATABASE_NAME = "statsDatabase";
     private static final String TABLE_STATS = "statsTable";
     private static final int DATABASE_VERSION = 1;
@@ -35,7 +33,6 @@ public class StatsDAL extends SQLiteOpenHelper {
     public StatsDAL(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         database = this.getWritableDatabase();
-        currentUserDataBase = new LocalDataBase(context);
     }
 
     @Override

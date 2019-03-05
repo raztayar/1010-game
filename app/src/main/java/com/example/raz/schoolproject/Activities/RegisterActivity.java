@@ -14,7 +14,7 @@ import com.example.raz.schoolproject.Objects.User;
 import com.example.raz.schoolproject.DAL.UserDAL;
 import com.example.raz.schoolproject.Utilities;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends BaseAppCompatActivity {
 
     Button submit;
     UserDAL userDAL;

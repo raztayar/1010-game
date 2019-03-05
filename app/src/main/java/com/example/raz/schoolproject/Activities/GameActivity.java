@@ -28,7 +28,7 @@ import com.example.raz.schoolproject.Objects.User;
 import com.example.raz.schoolproject.DAL.UserDAL;
 import com.example.raz.schoolproject.Utilities;
 
-public class GameActivity extends AppCompatActivity {
+public class GameActivity extends BaseAppCompatActivity {
 
     private Game game;
     public Theme theme;

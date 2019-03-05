@@ -3,6 +3,7 @@ package com.example.raz.schoolproject.Activities;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -11,7 +12,7 @@ import com.example.raz.schoolproject.R;
 import com.example.raz.schoolproject.Objects.User;
 import com.example.raz.schoolproject.DAL.UserDAL;
 
-public class MainMenuActivity extends AppCompatActivity {
+public class MainMenuActivity extends BaseAppCompatActivity {
 
     UserDAL userDAL;
 
@@ -90,5 +91,16 @@ public class MainMenuActivity extends AppCompatActivity {
             gotoRegister.setVisibility(View.GONE);
             logout.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.toggleMusic: {
+
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
