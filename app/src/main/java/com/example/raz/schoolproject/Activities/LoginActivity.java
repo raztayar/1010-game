@@ -22,8 +22,6 @@ public class LoginActivity extends BaseAppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        final Context thisContext = this;
-
         userDAL = new UserDAL(this);
 
         submit = findViewById(R.id.submitLoginButton);
@@ -36,11 +34,11 @@ public class LoginActivity extends BaseAppCompatActivity {
 
                 if (userDAL.isLoginValid(username, password)) {
                     userDAL.setCurrentUser(userDAL.getUserByUsername(username));
-                    Toast.makeText(thisContext, "Login successful", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(LoginActivity.this, MainMenuActivity.class));
                 }
                 else {
-                    Toast.makeText(thisContext, "Incorrect username or password", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Incorrect username or password", Toast.LENGTH_SHORT).show();
                 }
             }
         });

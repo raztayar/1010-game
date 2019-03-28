@@ -155,8 +155,8 @@ public class Game {
         for (boolean fullRow : fullRows) {
             if (fullRow) count++;
         }
-        for (boolean fullRow : fullRows) {
-            if (fullRow) count++;
+        for (boolean fullColumn : fullColumns) {
+            if (fullColumn) count++;
         }
 
         return count;

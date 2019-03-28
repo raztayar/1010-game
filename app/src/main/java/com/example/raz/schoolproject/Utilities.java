@@ -1,6 +1,7 @@
 package com.example.raz.schoolproject;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,5 +67,20 @@ public class Utilities {
             e.printStackTrace();
         }
         return md5;
+    }
+
+    public static void playSound(Context context, int resid, final int numberOfPlays) {
+        MediaPlayer mp = MediaPlayer.create(context, resid);
+        final int[] count = {0};
+        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                if (count[0] < numberOfPlays - 1) {
+                    mp.start();
+                    count[0]++;
+                }
+            }
+        });
+        if (numberOfPlays > 0) mp.start();
     }
 }

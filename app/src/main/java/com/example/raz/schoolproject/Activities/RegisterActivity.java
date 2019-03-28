@@ -24,8 +24,6 @@ public class RegisterActivity extends BaseAppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        final Context thisContext = this;
-
         userDAL = new UserDAL(this);
 
         submit = findViewById(R.id.submitRegisterButton);
@@ -41,11 +39,11 @@ public class RegisterActivity extends BaseAppCompatActivity {
                 if (userDAL.getUserByUsername(username) == null) {
                     User user = userDAL.createUser(new User(0, username, Utilities.md5(password), email, phoneNumber, 0));
                     userDAL.setCurrentUser(user);
-                    Toast.makeText(thisContext, "Register successful", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "Register successful", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(RegisterActivity.this, MainMenuActivity.class));
                 }
                 else {
-                    Toast.makeText(thisContext, "Username already exists", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "Username already exists", Toast.LENGTH_SHORT).show();
                 }
             }
         });

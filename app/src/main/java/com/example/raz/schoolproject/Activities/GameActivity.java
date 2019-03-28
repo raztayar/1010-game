@@ -1,10 +1,12 @@
 package com.example.raz.schoolproject.Activities;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.provider.Settings;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.DragEvent;
@@ -28,12 +30,13 @@ import com.example.raz.schoolproject.Objects.User;
 import com.example.raz.schoolproject.DAL.UserDAL;
 import com.example.raz.schoolproject.Utilities;
 
+import static com.example.raz.schoolproject.Utilities.dpToPixels;
+import static com.example.raz.schoolproject.Utilities.playSound;
+
 public class GameActivity extends BaseAppCompatActivity {
 
     private Game game;
     public Theme theme;
-
-    public Context thisContext;
 
     private TextView scoreView;
 
@@ -60,8 +63,6 @@ public class GameActivity extends BaseAppCompatActivity {
         scoreView = findViewById(R.id.score);
         queueView = findViewById(R.id.queue);
         boardView = findViewById(R.id.board);
-
-        thisContext = this;
 
         game = new Game(this);
         game.bringShapesToQueue();
@@ -121,6 +122,7 @@ public class GameActivity extends BaseAppCompatActivity {
                             int fullLines = game.removeFullRowsAndColumns();
 
                             game.addScore(currentShapeToPlace.getShapeScore() + (fullLines * 10));
+                            playSound(GameActivity.this, R.raw.apple_ding, fullLines);
 
                             User newUser = userDAL.getUserByID(currentUserID);
                             newUser.addCoins(fullLines);
@@ -136,22 +138,18 @@ public class GameActivity extends BaseAppCompatActivity {
                             updateQueueView();
 
                             if (game.isGameOver()) {
-                                MediaPlayer.create(thisContext, Settings.System.DEFAULT_ALARM_ALERT_URI).start();
-
-                                game.pauseAndUpdateTimer();
-
-                                game.saveStatsToHistory(currentUserID);
+                                playSound(GameActivity.this, R.raw.game_over, 1);
 
                                 finish();
                                 overridePendingTransition( 0, 0);
                                 startActivity(getIntent());
                                 overridePendingTransition( 0, 0);
 
-                                Toast.makeText(thisContext, "GAME OVER, " + "it took you: " + Utilities.millisToString(game.getGameStats().getTimeCountInMillis()) + ", to get: " + game.getGameStats().getScore(), Toast.LENGTH_LONG).show();
+                                Toast.makeText(GameActivity.this, "GAME OVER, " + "it took you: " + Utilities.millisToString(game.getGameStats().getTimeCountInMillis()) + ", to get: " + game.getGameStats().getScore(), Toast.LENGTH_LONG).show();
                             }
                         }
                         else {
-                            MediaPlayer.create(thisContext, Settings.System.DEFAULT_NOTIFICATION_URI).start();
+                            playSound(GameActivity.this, R.raw.bruh, 1);
                         }
                         return true;
                     case DragEvent.ACTION_DRAG_ENDED:
@@ -182,6 +180,10 @@ public class GameActivity extends BaseAppCompatActivity {
 
         if(game.isGameOver()) {
             theme = Theme.GAME_OVER;
+            game.pauseAndUpdateTimer();
+            game.saveStatsToHistory(currentUserID);
+
+            showGameOverDialog();
         }
         findViewById(R.id.mainGameActivityLayout).setBackgroundColor(theme.getBackgroundColor());
 
@@ -251,8 +253,8 @@ public class GameActivity extends BaseAppCompatActivity {
             boardView.addView(row);
             for (int j = 0; j < Game.BOARD_WIDTH; j++) {
                 TextView textView = new TextView(this);
-                TableRow.LayoutParams params = new TableRow.LayoutParams(Utilities.dpToPixels(this, 32), Utilities.dpToPixels(this, 32));
-                params.setMargins(Utilities.dpToPixels(this, 2), Utilities.dpToPixels(this, 2), Utilities.dpToPixels(this, 2), Utilities.dpToPixels(this, 2));
+                TableRow.LayoutParams params = new TableRow.LayoutParams(dpToPixels(this, 32), dpToPixels(this, 32));
+                params.setMargins(dpToPixels(this, 2), dpToPixels(this, 2), dpToPixels(this, 2), dpToPixels(this, 2));
                 textView.setLayoutParams(params);
                 textView.setBackgroundColor(theme.getEmptySquareColor());
                 textView.setGravity(Gravity.CENTER);
@@ -272,5 +274,31 @@ public class GameActivity extends BaseAppCompatActivity {
             offsetY += (boardSize / 10 / 2);
         Point dropPoint = new Point((int) ((x - offsetX) / (boardSize / 10)), (int) ((y - offsetY) / (boardSize / 10)));
         return new Point(dropPoint.x - shape.getMidPoint().x, dropPoint.y - shape.getMidPoint().y);
+    }
+
+    private void showGameOverDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
+        builder.setTitle("Game Over!");
+        builder.setMessage("The game has ended with a score of: " + game.getGameStats().getScore() + "\n What would you like to do now?");
+        builder.setPositiveButton("Reset Game", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                resetGame();
+            }
+        });
+        builder.setNegativeButton("Keep Trying", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.setNeutralButton("Menu", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startActivity(new Intent(GameActivity.this, MainMenuActivity.class));
+                finish();
+            }
+        });
+        builder.show();
     }
 }
