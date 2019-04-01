@@ -13,6 +13,7 @@ import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
@@ -132,10 +133,13 @@ public class GameActivity extends BaseAppCompatActivity {
                             updateScoreView();
 
                             game.removeShapeFromSlot(currentSlotIndex);
+                            boolean queueWasEmpty = false;
                             if(!game.hasShapesInQueue()) {
                                 game.bringShapesToQueue();
+                                queueWasEmpty = true;
                             }
                             updateQueueView();
+                            if (queueWasEmpty) animateQueueView();
 
                             if (game.isGameOver()) {
                                 playSound(GameActivity.this, R.raw.game_over, 1);
@@ -232,6 +236,15 @@ public class GameActivity extends BaseAppCompatActivity {
         }
     }
 
+    private void animateQueueView() {
+        for(int i = 0; i < 3; i++) {
+            View slotChild = getQueueSlotLayout(i).getChildAt(0);
+            if(slotChild != null) {
+                slotChild.startAnimation(AnimationUtils.loadAnimation(GameActivity.this, R.anim.righttoleft));
+            }
+        }
+    }
+
     private void updateScoreView() {
         scoreView.setText(String.valueOf(game.getGameStats().getScore()));
         scoreView.setTextColor(theme.getScoreColor());
@@ -295,8 +308,8 @@ public class GameActivity extends BaseAppCompatActivity {
         builder.setNeutralButton("Menu", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                startActivity(new Intent(GameActivity.this, MainMenuActivity.class));
                 finish();
+                startActivity(new Intent(GameActivity.this, MainMenuActivity.class));
             }
         });
         builder.show();

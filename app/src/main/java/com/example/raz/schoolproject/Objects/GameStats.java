@@ -12,7 +12,6 @@ public class GameStats {
     private int shapesPlacedCount;
     private Date date;
     private long timeCountInMillis;
-    //hotzone
     private long tempTimerStartTime;
     private boolean isTimerRunning = false;
 

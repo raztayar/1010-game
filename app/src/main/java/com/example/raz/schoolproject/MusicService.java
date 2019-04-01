@@ -5,24 +5,24 @@ import android.media.MediaPlayer;
 import android.os.IBinder;
 
 public class MusicService extends Service {
-        private static final String TAG = null;
-        MediaPlayer player;
 
-        public IBinder onBind(Intent intent) {
+    MediaPlayer player;
+
+    public IBinder onBind(Intent intent) {
             return null;
-        }
-        @Override
-        public void onCreate() {
-            super.onCreate();
-            player = MediaPlayer.create(this, R.raw.tubular_bells);
-            player.setLooping(true); // Set looping
-            player.setVolume(100,100);
+    }
 
-        }
-        public int onStartCommand(Intent intent, int flags, int startId) {
-            player.start();
-            return START_NOT_STICKY;
-        }
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        player = MediaPlayer.create(this, R.raw.tubular_bells);
+        player.setLooping(true); // Set looping
+        player.setVolume(100,100);
+    }
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        player.start();
+        return START_NOT_STICKY;
+    }
 
     @Override
     public boolean onUnbind(Intent intent) {

@@ -84,49 +84,6 @@ public class Game {
         return board;
     }
 
-    /*private void removeRow(int row) {
-        for (int i = 0; i < BOARD_HEIGHT; i++) {
-            board[row][i] = null;
-        }
-    }*/
-
-    /*private void removeColumn(int column) {
-        for (int i = 0; i < BOARD_WIDTH; i++) {
-            board[i][column] = null;
-        }
-    }*/
-
-/*
-    private boolean isRowFull(int row) {
-        for (int i = 0; i < BOARD_WIDTH; i++) {
-            if (board[row][i] == null) return false;
-        }
-        return true;
-    }
-*/
-
-/*
-    private boolean isColumnFull(int column) {
-        for (int i = 0; i < BOARD_WIDTH; i++) {
-            if (board[i][column] == null) return false;
-        }
-        return true;
-    }
-*/
-
-/*
-    public int getNumOfFullRowsAndColumns() {
-        int num = 0;
-        for (int i = 0; i < BOARD_HEIGHT; i++) {
-            if (isRowFull(i)) num++;
-        }
-        for (int i = 0; i < BOARD_WIDTH; i++) {
-            if (isColumnFull(i)) num++;
-        }
-        return num;
-    }
-*/
-
     public int removeFullRowsAndColumns(){
         boolean[] fullRows = new boolean[BOARD_HEIGHT];
         Arrays.fill(fullRows, true);

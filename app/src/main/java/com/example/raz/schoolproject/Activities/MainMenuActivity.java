@@ -1,7 +1,6 @@
 package com.example.raz.schoolproject.Activities;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +20,8 @@ public class MainMenuActivity extends BaseAppCompatActivity {
     Button gotoLogin;
     Button logout;
     Button gotoRegister;
+    private TextView coinsTextView;
+    private TextView helloTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,19 +79,24 @@ public class MainMenuActivity extends BaseAppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        ((TextView) findViewById(R.id.hello)).setText("Hello, " + userDAL.getCurrentUser().getUsername());
-        ((TextView) findViewById(R.id.coins)).setText("Coins: " + userDAL.getCurrentUser().getCoins());
+        helloTextView = (TextView) findViewById(R.id.hello);
+        helloTextView.setText("Hello, " + userDAL.getCurrentUser().getUsername());
+
+        coinsTextView = (TextView) findViewById(R.id.coins);
+        coinsTextView.setText("Coins: " + userDAL.getCurrentUser().getCoins());
+
         if (userDAL.getCurrentUser().getUserID() == -1) {
             gotoLogin.setVisibility(View.VISIBLE);
             logout.setVisibility(View.GONE);
             gotoStats.setVisibility(View.GONE);
-            ((TextView) findViewById(R.id.coins)).setText("Coins: log in to collect coins");
+            coinsTextView.setText("Coins: log in to collect coins");
         }
         else {
             gotoLogin.setVisibility(View.GONE);
             gotoRegister.setVisibility(View.GONE);
             logout.setVisibility(View.VISIBLE);
         }
+
     }
 
     @Override
