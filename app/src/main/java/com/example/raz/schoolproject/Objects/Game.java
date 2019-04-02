@@ -21,6 +21,9 @@ public class Game {
     private ShapeType[][] board;
     private GameStats gameStats;
 
+    private boolean[] fullRows = new boolean[BOARD_WIDTH];
+    private boolean[] fullColumns = new boolean[BOARD_HEIGHT];
+
     public Game(GameActivity gameActivity){
         this.board = new ShapeType[BOARD_WIDTH][BOARD_HEIGHT];
         this.gameStats = new GameStats();
@@ -84,7 +87,7 @@ public class Game {
         return board;
     }
 
-    public int removeFullRowsAndColumns(){
+    public void updateFullLines(){
         boolean[] fullRows = new boolean[BOARD_HEIGHT];
         Arrays.fill(fullRows, true);
         boolean[] fullColumns = new boolean[BOARD_WIDTH];
@@ -99,6 +102,11 @@ public class Game {
             }
         }
 
+        this.fullRows = fullRows;
+        this.fullColumns = fullColumns;
+    }
+
+    public void removeFullLines() {
         for (int i = 0; i < BOARD_HEIGHT; i++) {
             for (int j = 0; j < BOARD_WIDTH; j++) {
                 if (fullRows[i] || fullColumns[j]) {
@@ -106,7 +114,9 @@ public class Game {
                 }
             }
         }
+    }
 
+    public int getNumOfFullLines() {
         int count = 0;
 
         for (boolean fullRow : fullRows) {
@@ -154,5 +164,13 @@ public class Game {
 
     public void raiseShapesPlacedCountByOne() {
         gameStats.setShapesPlacedCount(gameStats.getShapesPlacedCount()+1);
+    }
+
+    public boolean[] getFullRows() {
+        return fullRows;
+    }
+
+    public boolean[] getFullColumns() {
+        return fullColumns;
     }
 }

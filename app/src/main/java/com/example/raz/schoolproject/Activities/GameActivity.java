@@ -1,11 +1,10 @@
 package com.example.raz.schoolproject.Activities;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
-import android.media.MediaPlayer;
-import android.provider.Settings;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
@@ -120,16 +119,18 @@ public class GameActivity extends BaseAppCompatActivity {
                             currentShapeToPlace.placeShape(placePoint, game.getBoard());
                             game.raiseShapesPlacedCountByOne();
 
-                            int fullLines = game.removeFullRowsAndColumns();
+                            game.updateFullLines();
 
-                            game.addScore(currentShapeToPlace.getShapeScore() + (fullLines * 10));
-                            playSound(GameActivity.this, R.raw.apple_ding, fullLines);
+                            int numOfFullLines = game.getNumOfFullLines();
+                            game.addScore(currentShapeToPlace.getShapeScore() + (numOfFullLines * 10));
+                            playSound(GameActivity.this, R.raw.apple_ding, numOfFullLines);
 
                             User newUser = userDAL.getUserByID(currentUserID);
-                            newUser.addCoins(fullLines);
+                            newUser.addCoins(numOfFullLines);
                             userDAL.updateUser(newUser);
 
                             updateBoardView();
+                            game.removeFullLines();
                             updateScoreView();
 
                             game.removeShapeFromSlot(currentSlotIndex);
@@ -216,10 +217,15 @@ public class GameActivity extends BaseAppCompatActivity {
         for (int i = 0; i < boardView.getChildCount(); i++) {
             TableRow row = (TableRow) boardView.getChildAt(i);
             for (int j = 0; j < row.getChildCount(); j++) {
-                if(game.getBoard()[i][j] != null){
-                    row.getChildAt(j).setBackgroundColor(theme.getColorHashMap().get(game.getBoard()[i][j]));
+                if(game.getBoard()[i][j] != null) {
+                    if (game.getFullRows()[i] || game.getFullColumns()[j]){
+                        fadeBackgroundColorOfView((int) theme.getColorHashMap().get(game.getBoard()[i][j]), theme.getEmptySquareColor(), row.getChildAt(j));
+                    }
+                    else {
+                        row.getChildAt(j).setBackgroundColor(theme.getColorHashMap().get(game.getBoard()[i][j]));
+                    }
                 }
-                else{
+                else {
                     row.getChildAt(j).setBackgroundColor(theme.getEmptySquareColor());
                 }
             }
@@ -313,5 +319,12 @@ public class GameActivity extends BaseAppCompatActivity {
             }
         });
         builder.show();
+    }
+
+    private void fadeBackgroundColorOfView(int colorFrom, int colorTo, View view) {
+        ColorDrawable[] color = {new ColorDrawable(colorFrom), new ColorDrawable(colorTo)};
+        TransitionDrawable trans = new TransitionDrawable(color);
+        view.setBackgroundDrawable(trans);
+        trans.startTransition(500);
     }
 }
